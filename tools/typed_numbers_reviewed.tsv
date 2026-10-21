@@ -1,0 +1,190 @@
+# Reviewed numbers typed directly in the manuscript (not generated macros).
+# Four-digit years are excluded. Columns: file, number, preceding 40 characters, category.
+# Any typed number not listed here makes tools/check_paper.py fail.
+main.tex	0	e}{A\arabic{figure}} \setcounter{table}{	layout
+main.tex	0	etcounter{table}{0} \setcounter{figure}{	layout
+abstract.tex	5	cial thresholds (life expectancy, under-	label
+abstract.tex	95	ll from about ~t in {} to ~t in {} (	confidence level (95%)
+abstract.tex	5	ment \medskip \noindent\textbf{JEL:} O1	label
+abstract.tex	1	 \medskip \noindent\textbf{JEL:} O15, Q0	label
+abstract.tex	6	skip \noindent\textbf{JEL:} O15, Q01, Q5	label
+abstract.tex	5	\noindent\textbf{JEL:} O15, Q01, Q56, I1	label
+appendix.tex	3	ng \footnotesize \setlength{\tabcolsep}{	layout
+appendix.tex	0.19	abular}{>{\raggedright\arraybackslash}p{	layout
+appendix.tex	0.37	newidth}>{\raggedright\arraybackslash}p{	layout
+appendix.tex	0.15	newidth}>{\raggedright\arraybackslash}p{	layout
+appendix.tex	0.22	newidth}>{\raggedright\arraybackslash}p{	layout
+appendix.tex	0	t birth, total & Years & WDI (SP.DYN.LE0	label
+appendix.tex	5	& WDI (SP.DYN.LE00.IN), UN WPP \\ Under-	label
+appendix.tex	1	bability of dying before age five & Per 	unit
+appendix.tex	000	lity of dying before age five & Per 1{,}	unit
+appendix.tex	100	 & WDI (EG.ELC.ACCS.ZS) \\ Employment & 	definition (employment = 100 - unemployment)
+appendix.tex	4	\\ GHG including land use & \COtwo, CH$_	label
+appendix.tex	2	luding land use & \COtwo, CH$_4$ and N$_	label
+appendix.tex	100	 use, per person & t \COtwo-eq.\ (GWP$_{	label
+appendix.tex	0.95	ttomrule \end{tabular} \begin{minipage}{	layout
+appendix.tex	3	\begin{minipage}{0.95\linewidth}\vspace{	layout
+appendix.tex	256	It loads the raw input files, whose SHA-	label
+appendix.tex	3.13	rom the pinned package versions (Python 	label
+appendix.tex	10	of floating-point values (by less than $	reproducibility record
+conclusion.tex	20	ined from the public repository of on 	data access date
+conclusion.tex	256	 The code, the raw input files with SHA-	label
+data.tex	193	 sovereign states. It is defined as the 	definition (UN membership)
+data.tex	3166	. Countries are identified by their ISO 	label
+data.tex	1	ntries are identified by their ISO 3166-	label
+data.tex	3	re identified by their ISO 3166-1 alpha-	label
+data.tex	2	\ \quad\quad with consumption-based CO$_	label
+data.tex	2	\\ \quad\quad with production-based CO$_	label
+data.tex	2	ot classified: no consumption-based CO$_	label
+data.tex	0.9	ttomrule \end{tabular} \begin{minipage}{	layout
+data.tex	3	 \begin{minipage}{0.9\linewidth}\vspace{	layout
+data.tex	0	ectancy at birth} (WDI series SP.DYN.LE0	label
+data.tex	74	ironmental conditions. The threshold of 	social threshold (definition)
+data.tex	5	f 74 years follows . \paragraph{Under-	label
+data.tex	1	SH.DYN.MORT, deaths before age five per 	unit
+data.tex	000	YN.MORT, deaths before age five per 1{,}	unit
+data.tex	25	ion and maternal care. The threshold of 	social threshold (definition)
+data.tex	1	al care. The threshold of 25 deaths per 	unit
+data.tex	000	are. The threshold of 25 deaths per 1{,}	unit
+data.tex	3.2	the Sustainable Development Goal target 	label
+data.tex	7.1.1	e population with access, SDG indicator 	label
+data.tex	95	refore with emissions. The threshold of 	social threshold (definition)
+data.tex	100	llows and . \paragraph{Employment} (	definition (employment = 100 - unemployment)
+data.tex	94	orce that is employed. The threshold is 	social threshold (definition)
+data.tex	6	, equivalent to an unemployment rate of 	social threshold (definition)
+data.tex	100	ous oxide, in \COtwo-equivalents over a 	definition (GWP100)
+data.tex	5	or in each year. Life expectancy, under-	label
+data.tex	5	ly in the typical country. Median under-	label
+data.tex	1	rtality fell from {} to {} deaths per 	unit
+data.tex	000	ity fell from {} to {} deaths per 1{,}	unit
+discussion.tex	2	 decades. But it remained {} times the 	temperature target label
+discussion.tex	11	 high-income countries. They found that 	cited literature value (verified against source)
+discussion.tex	6	ers because unemployment rates of above 	social threshold (definition)
+discussion.tex	94	and high-income countries, so requiring 	social threshold (definition)
+discussion.tex	2	by the pooled model, it would reach the 	temperature target label
+discussion.tex	1.5	tration says nothing about the stricter 	temperature target label
+discussion.tex	10	~t. A group of {} countries are within 	methodological parameter (near-miss band)
+framework.tex	1.2	d in . \begin{description}[leftmargin=	layout
+framework.tex	0	scription}[leftmargin=1.2em,labelindent=	layout
+framework.tex	50	 per person at which this curve reaches 	definition (50% probability)
+framework.tex	8	ies a destination. A country that emits 	worked arithmetic example (verified)
+framework.tex	5.6	2022 must reduce its emissions by about 	worked arithmetic example (verified)
+framework.tex	1.61	missions by about 5.6\% a year to reach 	worked arithmetic example (verified)
+framework.tex	1.5	0. A country that cuts its emissions by 	worked arithmetic example (verified)
+framework.tex	2.5	e}[label=\textbf{E\arabic*.},leftmargin=	layout
+introduction.tex	5	ars between {} and , and median under-	label
+introduction.tex	1	rtality fell from {} to {} deaths per 	unit
+introduction.tex	000	ity fell from {} to {} deaths per 1{,}	unit
+introduction.tex	2	t consistent with the Paris Agreement's 	temperature target label
+introduction.tex	74	accounting: life expectancy of at least 	social threshold (definition)
+introduction.tex	5	 expectancy of at least 74 years, under-	label
+introduction.tex	25	 74 years, under-5 mortality of at most 	social threshold (definition)
+introduction.tex	1	rs, under-5 mortality of at most 25 per 	unit
+introduction.tex	000	under-5 mortality of at most 25 per 1{,}	unit
+introduction.tex	95	 births, electricity access of at least 	social threshold (definition)
+introduction.tex	94	 least 95\%, and employment of at least 	social threshold (definition)
+introduction.tex	150	iophysical boundaries. assessed about 	cited literature value (verified against source)
+introduction.tex	140	ysis to a 1992--2015 panel of more than 	cited literature value (verified against source)
+introduction.tex	35	updated the doughnut to 2000--2022 with 	cited literature value (verified against source)
+introduction.tex	11	ary by 2050. made this comparison for 	cited literature value (verified against source)
+literature.tex	350	n atmospheric \COtwo{} concentration of 	cited literature value (verified against source)
+literature.tex	1	bon budget. They took a budget of about 	cited literature value (verified against source)
+literature.tex	000	budget. They took a budget of about 1{,}	unit
+literature.tex	66	two{} for 2011--2100, consistent with a 	cited literature value (verified against source)
+literature.tex	2	 a 66\% chance of keeping warming below 	temperature target label
+literature.tex	90	degree C, and spread it evenly over the 	cited literature value (verified against source)
+literature.tex	1.61	le. The result is an annual boundary of 	cited value (O'Neill 2018 boundary)
+literature.tex	350	could have produced before crossing the 	cited literature value (verified against source)
+literature.tex	50	budget from the beginning of 2020 for a 	cited literature value (verified against source)
+literature.tex	1.5	or a 50\% chance of limiting warming to 	temperature target label
+literature.tex	500	ng warming to 1.5\textdegree C is about 	cited literature value (verified against source)
+literature.tex	2	 implies about ~\tpc, roughly half the 	temperature target label
+literature.tex	5	 including the target of reducing under-	label
+literature.tex	25	f reducing under-5 mortality to at most 	social threshold (definition)
+literature.tex	1	er-5 mortality to at most 25 deaths per 	unit
+literature.tex	000	 mortality to at most 25 deaths per 1{,}	unit
+literature.tex	74	hresholds, including life expectancy of 	social threshold (definition)
+literature.tex	95	 of 74 years, access to electricity for 	social threshold (definition)
+literature.tex	94	5\% of the population and employment of 	social threshold (definition)
+literature.tex	6	rld Bank data, and set its threshold at 	social threshold (definition)
+literature.tex	5	ly from these studies, except for under-	label
+literature.tex	60	 population of ten billion with roughly 	cited literature value (verified against source)
+literature.tex	11	equired rates directly. They identified 	cited literature value (verified against source)
+literature.tex	220	untries would take on average more than 	cited literature value (verified against source)
+literature.tex	95	 220 years to reduce their emissions by 	cited literature value (verified against source)
+methods.tex	1	\min\!\left(\frac{x_{ikt}}{\theta_k},\, 	notation
+methods.tex	5	 1\right), \end{equation} and for under-	label
+methods.tex	1	\min\!\left(\frac{\theta_k}{x_{ikt}},\, 	notation
+methods.tex	1	k}{x_{ikt}},\, 1\right), \qquad r_{ikt}=	notation
+methods.tex	0	), \qquad r_{ikt}=1 \text{ if } x_{ikt}=	notation
+methods.tex	0.8	 means the threshold is met. A ratio of 	worked arithmetic example (verified)
+methods.tex	80	ratio of 0.8 means the country achieves 	worked arithmetic example (verified)
+methods.tex	25	r mortality, that its mortality rate is 	social threshold (definition)
+methods.tex	1	hresholds are met, that is, if $r_{ikt}=	notation
+methods.tex	1	\begin{equation} \Pr(\text{met}_{it} = 	notation
+methods.tex	1	_{it}\right), \qquad \Lambda(z) = \frac{	notation
+methods.tex	1	t}\right), \qquad \Lambda(z) = \frac{1}{	notation
+methods.tex	0	quals one half where $a_t + b_t \ln c = 	notation
+methods.tex	0	e requirement is defined only if $b_t > 	notation
+methods.tex	1	\begin{equation} \Pr(\text{met}_{it} = 	notation
+methods.tex	1	 constant proportion $\exp(-\gamma/b) - 	notation
+methods.tex	95	ept, and the model is re-estimated. The 	confidence level (95%)
+methods.tex	2.5	ated. The 95\% interval is given by the 	confidence level (95%)
+methods.tex	97.5	95\% interval is given by the 2.5th and 	confidence level (95%)
+methods.tex	5	g only of the life expectancy and under-	label
+methods.tex	0	+ \delta\, \Delta \ln g_i + \phi\, y_{i,	notation
+methods.tex	0	 \end{equation} The initial level $y_{i,	notation
+methods.tex	0	 z_{it} = \alpha_i + \lambda_i\, (t - t_	notation
+methods.tex	100	t_0) + e_{it}, \qquad \text{growth}_i = 	notation
+methods.tex	1	\text{growth}_i = 100\,(e^{\lambda_i} - 	notation
+methods.tex	95	f absolute decoupling also requires the 	confidence level (95%)
+methods.tex	100	ry by 2050 is \begin{equation} \rho_i = 	notation
+methods.tex	1	100\left[\left(\frac{B}{c_{iT}}\right)^{	notation
+methods.tex	1	(\frac{B}{c_{iT}}\right)^{1/(2050-T)} - 	notation
+methods.tex	1	tion} n_i = \frac{\ln (B / c_{iT})}{\ln(	notation
+methods.tex	100	i = \frac{\ln (B / c_{iT})}{\ln(1 + g_i/	notation
+methods.tex	90	 rate; \item every country achieves the 	methodological parameter
+methods.tex	200	solution is assessed by refitting it to 	methodological parameter
+methods.tex	1.5	 that of the sample. \item The stricter 	temperature target label
+methods.tex	5	ing each social indicator to fall up to 	methodological parameter
+methods.tex	0.95	 by a mean attainment ratio of at least 	methodological parameter
+methods.tex	256	The raw input files are stored with SHA-	label
+results.tex	5	 of them the weakest indicator is under-	label
+results.tex	10	he foundation. {} countries are within 	methodological parameter (near-miss band)
+results.tex	1	al indicator relative to its threshold (	notation
+results.tex	1.4	 , very close to the boundary. India's 	descriptive fact (India population 2022, WDI 1.43 bn)
+results.tex	95	ded bands are the pooled model with its 	confidence level (95%)
+results.tex	95	 shaded bands are the pooled model with 	confidence level (95%)
+results.tex	74	alth thresholds: life expectancy $\geq$ 	social threshold (definition)
+results.tex	5	fe expectancy $\geq$ 74 years and under-	label
+results.tex	25	$ 74 years and under-5 mortality $\leq$ 	social threshold (definition)
+results.tex	19	ectancy and employment during the COVID-	label
+results.tex	95	 fell from about ~t per person in {} (	confidence level (95%)
+results.tex	95	is is an average decline of \% a year (	confidence level (95%)
+results.tex	2	} the pooled estimate was {} times the 	temperature target label
+results.tex	1.5	textdegree C boundary and {} times the 	temperature target label
+results.tex	5	h thresholds, life expectancy and under-	label
+results.tex	95	 It went from ~t in {} to ~t in {} (	confidence level (95%)
+results.tex	10	emissions and controlling for income, a 	worked interpretation (10% rise in emissions)
+results.tex	95	how the achieved annual change with its 	confidence level (95%)
+results.tex	90	e boundary by 2050. If all achieved the 	methodological parameter
+results.tex	5	ial foundation is defined. Tolerating a 	methodological parameter
+discussion.tex	5	sholds are applied strictly. Allowing a 	methodological parameter (5% tolerance)
+discussion.tex	5	d on the exact threshold values. With a 	methodological parameter (5% tolerance)
+discussion.tex	2	ctricity access, and revisions of up to 	verification record (WDI comparison)
+discussion.tex	1	ss, and revisions of up to 2 deaths per 	unit
+discussion.tex	000	and revisions of up to 2 deaths per 1{,}	unit
+discussion.tex	5	 of up to 2 deaths per 1{,}000 in under-	label
+results.tex	5	tly. When each indicator may fall up to 	methodological parameter (5% tolerance)
+appendix.tex	54	 each with the numbers in the text; all 	verification record (appendix)
+appendix.tex	18	m the World Bank's data service for the 	verification record (appendix)
+appendix.tex	410	assification is closest to a threshold (	verification record (appendix)
+appendix.tex	0.1	tricity access differed in one value by 	verification record (appendix)
+appendix.tex	5	lue by 0.1 percentage points, and under-	label
+appendix.tex	2	r-5 mortality had been revised by up to 	verification record (appendix)
+appendix.tex	1	 had been revised by up to 2 deaths per 	unit
+appendix.tex	000	 been revised by up to 2 deaths per 1{,}	unit
+appendix.tex	3.13	ts: the development environment (Python 	label
+appendix.tex	3.11	.13); and a fresh environment on Python 	label
+appendix.tex	3.11	lt files and analysis panel. The Python 	label
+appendix.tex	9	oating-point values (by less than $10^{-	verification record (appendix)

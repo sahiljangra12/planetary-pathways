@@ -1,0 +1,136 @@
+% ======================================================================
+\section{Methods}\label{sec:methods}
+
+This section defines the measures and describes the statistical methods. It covers the social attainment measures and the classification into configurations, the carbon requirement, the within-country models, the decoupling analysis, the analysis of persistence, the robustness checks, and the samples used and how statistical uncertainty and failed estimates are handled.
+
+\subsection{Social attainment and the four configurations}
+
+\paragraph{Attainment ratios.} For each country $i$, year $t$ and social indicator $k$, the attainment ratio compares achievement $x_{ikt}$ with the threshold $\theta_k$. For indicators where higher values are better (life expectancy, electricity access, employment) it is
+\begin{equation}
+r_{ikt} = \min\!\left(\frac{x_{ikt}}{\theta_k},\, 1\right),
+\end{equation}
+and for under-5 mortality, where lower values are better,
+\begin{equation}
+r_{ikt} = \min\!\left(\frac{\theta_k}{x_{ikt}},\, 1\right), \qquad r_{ikt}=1 \text{ if } x_{ikt}=0.
+\end{equation}
+A ratio of one means the threshold is met. A ratio of 0.8 means the country achieves 80\% of the threshold, or, for mortality, that its mortality rate is 25\% above the threshold. Capping the ratio at one reflects the logic of a foundation: exceeding a threshold on one indicator does not compensate for falling short on another.
+
+Two continuous summaries are used. The \emph{weakest attainment ratio}, $\min_k r_{ikt}$, measures how close a country is to meeting the whole foundation. The \emph{mean attainment ratio}, the average of the observed ratios (computed only when at least \nMinSocial{} of the four are observed), measures overall attainment and is used in the within-country models and in one robustness check.
+
+\paragraph{Meeting the social foundation.} A country-year meets the social foundation if all four thresholds are met, that is, if $r_{ikt}=1$ for all $k$. Missing data are treated asymmetrically. If any observed indicator falls short of its threshold, the country is classified as falling short, because that shortfall is known whatever the missing indicators show. If no observed indicator falls short but at least one is missing, the country's status is undetermined and it is left unclassified. A country is therefore classified as meeting the foundation only when all four indicators are observed. This rule prevents a gap in the data from being read as success. Without it, for example, Viet Nam would appear to meet a five-indicator foundation in 2004--2014 only because its secondary enrolment was not reported in those years.
+
+\paragraph{Overshooting the climate boundary.} A country-year overshoots the boundary if its consumption-based \COtwo{} emissions per person exceed $B = \nBoundary$~t. The ratio $c_{it}/B$ measures how far emissions are above or below the boundary.
+
+\paragraph{Configurations.} Crossing the two criteria gives the four configurations of \cref{sec:framework}. They are computed for each country-year, and for period averages in 1990--2000, 2001--2010 and 2011--2022. For the period classification, each variable is first averaged over the years of the period, and then the thresholds are applied to the averages. A period average is computed only if the variable is observed in at least half of the period's years.
+
+\input{../results/tables/tab_thresholds.tex}
+
+\subsection{The carbon requirement}
+
+\paragraph{Annual estimates.} For each year $t$, a logistic regression is estimated across countries:
+\begin{equation}\label{eq:annual}
+\Pr(\text{met}_{it} = 1) = \Lambda\!\left(a_t + b_t \ln c_{it}\right), \qquad \Lambda(z) = \frac{1}{1+e^{-z}},
+\end{equation}
+where $\text{met}_{it}$ indicates that country $i$ meets the social foundation and $c_{it}$ is its consumption-based \COtwo{} per person. Emissions enter in logarithms because the relationship between emissions and social outcomes is strongly concave: an extra tonne matters much more at low levels than at high levels. The fitted probability equals one half where $a_t + b_t \ln c = 0$, so the carbon requirement in year $t$ is
+\begin{equation}
+R_t = \exp\!\left(-\frac{a_t}{b_t}\right).
+\end{equation}
+The requirement is defined only if $b_t > 0$, that is, if the probability of meeting the foundation rises with emissions. Years with fewer than \nMinCross{} classified countries are not estimated, which excludes only 1990. That year lacks employment data, so almost no country can be classified.
+
+\paragraph{The pooled model.} Annual estimates are noisy, particularly in the early 1990s, when few countries met the foundation. The headline trend is therefore estimated from a single pooled model with a linear time term:
+\begin{equation}\label{eq:pooled}
+\Pr(\text{met}_{it} = 1) = \Lambda\!\left(a + b \ln c_{it} + \gamma\,(t - 2000)\right).
+\end{equation}
+In this model the requirement in year $t$ is
+\begin{equation}
+R_t = \exp\!\left(-\frac{a + \gamma\,(t-2000)}{b}\right),
+\end{equation}
+which changes by the constant proportion $\exp(-\gamma/b) - 1$ each year. A negative value means the requirement is falling. The model assumes that the requirement changes at a constant proportional rate, which is a simplification. The annual estimates are shown alongside it so that departures from this assumption are visible.
+
+\paragraph{Confidence intervals.} Observations of the same country in different years are not independent, so standard errors that treat them as independent would understate uncertainty. Confidence intervals are therefore computed by a country-cluster bootstrap \citep{cameron2008}. In each of \nBootReps{} replications, countries are drawn with replacement, all years of each drawn country are kept, and the model is re-estimated. The 95\% interval is given by the 2.5th and 97.5th percentiles of the replicated estimates. For the annual estimates, which use one observation per country, the bootstrap resamples countries within the year.
+
+\paragraph{Fit diagnostics.} Logistic regression can fail in two ways that are relevant here. The optimiser may fail to converge. And the data may show perfect or quasi-perfect separation, where emissions alone perfectly predict which countries meet the foundation, so that the slope tends to infinity. Both are more likely in bootstrap samples that happen to contain few countries meeting the foundation. The analysis does not suppress the warnings that signal these problems. It records them, and treats any fit with a convergence failure, a separation warning or non-finite parameters as failed. A failed bootstrap replication is excluded from the confidence interval and counted. The number and causes of failures are reported in \cref{sec:results} and \cref{app:extra}. No point estimate in the main analysis failed.
+
+\paragraph{Variants.} The requirement is also estimated with production-based emissions, and for a ``health foundation'' consisting only of the life expectancy and under-5 mortality thresholds. The health foundation shows how much of the carbon requirement is associated with health outcomes and how much with energy access and employment.
+
+\subsection{Within-country associations}
+
+The cross-country relationship between emissions and social outcomes partly reflects stable differences between countries, such as geography, history and institutions, as well as income. To ask whether, within a given country, rising emissions go together with social gains, two-way fixed-effects models are estimated:
+\begin{equation}\label{eq:fe}
+y_{it} = \beta \ln c_{it} + \delta \ln g_{it} + \mu_i + \tau_t + \varepsilon_{it}.
+\end{equation}
+Here $y_{it}$ is life expectancy or mean social attainment, $g_{it}$ is GDP per person, $\mu_i$ is a country fixed effect that absorbs all stable differences between countries, and $\tau_t$ is a year fixed effect that absorbs shocks common to all countries in a year. The coefficient $\beta$ measures how the outcome changes when a country's emissions change, relative to its own average and to the global trend, holding income constant. The models use all country-years from \nFirstYear{} to \nLastYear{} with consumption-based emissions and the outcome observed (\nFeN{} observations for \nFeCountries{} countries in the life-expectancy model). Unlike the configurations, these models include 1990: life expectancy does not depend on the employment data, and mean social attainment is defined whenever at least \nMinSocial{} of the four indicators are observed. Standard errors are clustered by country. Each model is estimated with and without the income control, and with three pressure measures: consumption-based \COtwo, production-based \COtwo, and total greenhouse gases including land use.
+
+Annual fixed-effects estimates can be driven by short-run co-movements, for example during recessions, when both emissions and employment fall. As a complement, long-difference regressions relate the change in each outcome between 1990--2000 and 2011--2022 to the change in log emissions and log income over the same interval:
+\begin{equation}\label{eq:ld}
+\Delta y_i = \alpha + \beta\, \Delta \ln c_i + \delta\, \Delta \ln g_i + \phi\, y_{i,0} + u_i.
+\end{equation}
+The initial level $y_{i,0}$ is included because countries starting from lower levels have more room to improve. Standard errors are heteroskedasticity-robust (HC3, \citealp{mackinnon1985}).
+
+Neither model identifies a causal effect. Emissions are not assigned at random, and both models can be biased by time-varying factors that affect emissions and outcomes at the same time, such as changes in health policy or economic structure. The models are used to check whether the cross-country pattern also appears within countries over time, not to estimate how much social progress an additional tonne of \COtwo{} causes.
+
+\subsection{Decoupling}
+
+\paragraph{Trend growth rates.} For each country and each of two windows, 2001--2010 and 2011--2022, the annual growth rates of consumption-based \COtwo{} per person and of GDP per person are estimated from log-linear trends:
+\begin{equation}
+\ln z_{it} = \alpha_i + \lambda_i\, (t - t_0) + e_{it}, \qquad \text{growth}_i = 100\,(e^{\lambda_i} - 1),
+\end{equation}
+where $z$ is either emissions or GDP per person. Estimating trends from all years in the window, rather than comparing the first and last years, makes the rates much less sensitive to unusual individual years such as recessions. A country is included if it has at least \nDecMinYears{} years of data in the window.
+
+\paragraph{Classification.} Following \citet{haberl2020}, a country is classified as follows:
+\begin{itemize}
+\item \emph{absolute decoupling}: income grows and emissions fall;
+\item \emph{relative decoupling}: both grow, but emissions grow more slowly than income;
+\item \emph{coupled}: emissions grow at least as fast as income;
+\item \emph{no income growth}: income per person did not grow, so emission trends cannot be read as decoupling.
+\end{itemize}
+A stricter version of absolute decoupling also requires the 95\% confidence interval of the emissions trend to lie entirely below zero.
+
+\paragraph{Required rates.} For a country whose emissions in its last observed year $T$ (\nLastYear) are $c_{iT} > B$, the constant annual rate of change needed to reach the boundary by 2050 is
+\begin{equation}
+\rho_i = 100\left[\left(\frac{B}{c_{iT}}\right)^{1/(2050-T)} - 1\right].
+\end{equation}
+A country is \emph{on track} if its achieved rate is at least as negative as $\rho_i$. If the achieved rate $g_i$ continued unchanged, the number of years needed to reach the boundary would be
+\begin{equation}
+n_i = \frac{\ln (B / c_{iT})}{\ln(1 + g_i/100)}.
+\end{equation}
+This is an arithmetic illustration of the gap between the observed and the required pace, not a forecast. Future emission trends will depend on policy, technology and economic conditions that the historical trend does not capture.
+
+\paragraph{Scenarios.} To show how the conclusion depends on the assumption that achieved rates continue, the calculation is repeated under four alternative scenarios for the absolute decouplers above the boundary:
+\begin{itemize}
+\item every country doubles its achieved rate;
+\item every country achieves the 90th-percentile rate of the group;
+\item every country achieves the fastest rate any country in the group achieved;
+\item every country achieves its own required rate.
+\end{itemize}
+
+\subsection{Persistence and transitions}
+
+Transition matrices count the countries moving between configurations from one period to the next, using period averages. The share of countries on the diagonal, those remaining in the same configuration, measures persistence.
+
+To check whether the four configurations correspond to natural groupings in the data, rather than being imposed by the thresholds, Gaussian mixture models are fitted to the standardised log consumption-based emissions and mean social attainment of all classified country-periods. The number of mixture components is chosen by the Bayesian information criterion \citep{fraley2002}. The agreement between the four-component solution and the threshold-based configurations is measured by the adjusted Rand index \citep{hubert1985}, which equals one for identical partitions and is close to zero for unrelated ones. The stability of the four-component solution is assessed by refitting it to 200 bootstrap samples.
+
+\subsection{Robustness}\label{sec:robust}
+
+All headline results are re-estimated under eight alternative specifications, each changing one choice.
+\begin{enumerate}
+\item Production-based instead of consumption-based emissions, for all \nNCountries{} countries.
+\item Production-based emissions for the \nNCons{} countries of the main sample, to separate the effect of the accounting method from that of the sample.
+\item The stricter 1.5\textdegree C boundary of \nBoundaryFifteen~t.
+\item Allowing each social indicator to fall up to 5\% short of its threshold.
+\item Meeting the foundation defined by a mean attainment ratio of at least 0.95 instead of all four thresholds.
+\item Adding secondary enrolment as a fifth social indicator.
+\item Dropping employment, the indicator most affected by business cycles.
+\item No interpolation or gap filling of missing values.
+\end{enumerate}
+The pooled carbon requirement in each robustness specification uses \nRobReps{} cluster-bootstrap replications.
+
+\subsection{Estimation samples and inference}
+
+\Cref{tab:samples} summarises, for each analysis, the sample used, its size, and how statistical uncertainty and failed estimates are handled.
+
+\input{../results/tables/tab_samples.tex}
+
+\subsection{Software and reproducibility}
+
+All analyses are implemented in a Python package. It uses pandas for data handling, statsmodels for the logistic and least-squares regressions, linearmodels for the fixed-effects models, scikit-learn for the mixture models and matplotlib for the figures. A single command rebuilds the analysis panel from the raw data files, runs every analysis and writes all results, tables and figures, including a file of the numbers quoted in the text, which the manuscript reads. The raw input files are stored with SHA-256 checksums, the exact package versions are pinned, and random-number generators are seeded, so repeated runs give identical results. An automated test suite checks the sample definition, the direction of each indicator, the classification rules (including their behaviour with missing data), the estimators on simulated data with known answers, and the integrity of the generated outputs.

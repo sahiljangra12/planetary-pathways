@@ -1,0 +1,6 @@
+scenario,median_rate,n_by_2050,n,median_year
+Achieved 2011--2022 rates,-1.594637821753453,2,41,2115.436810958986
+Each country doubles its rate,-3.189275643506906,6,41,2068.2579089608585
+All at the 90th-percentile rate,-3.166784769538089,7,41,2070.8171734272805
+All at the fastest achieved rate,-3.9223009588976177,10,41,2061.2608426135125
+Each at the rate required by 2050,-5.456022161524821,41,41,2050.0

@@ -1,0 +1,28 @@
+\begin{table}[tbp]
+\centering
+\small
+\setlength{\tabcolsep}{3pt}
+\caption{Variables, sources and coverage in the analysis panel.}
+\label{tab:data}
+\begin{threeparttable}
+\begin{tabular}{llrrr}
+\toprule
+Variable & Source & Countries & Years & Coverage (\%) \\
+\midrule
+Life expectancy at birth & WDI (UN WPP) & 155 & 1990--2022 & 100 \\
+Under-5 mortality & WDI (UN IGME) & 155 & 1990--2022 & 100 \\
+Access to electricity & WDI (SDG 7.1.1) & 155 & 1990--2022 & 95 \\
+Secondary gross enrolment & WDI (UNESCO UIS) & 154 & 1990--2022 & 86 \\
+Employment (100 $-$ unemployment) & WDI (ILO modelled) & 155 & 1991--2022 & 97 \\
+Consumption-based CO$_2$ per person & Global Carbon Budget 2025 & 114 & 1990--2022 & 73 \\
+Production-based CO$_2$ per person & Global Carbon Budget 2025 & 155 & 1990--2022 & 100 \\
+GHG incl.\ land use per person & \citet{jones2023} & 154 & 1990--2022 & 99 \\
+GDP per person (2011 int.\$) & Maddison Project 2023 & 149 & 1990--2022 & 96 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]
+\footnotesize
+\item \textit{Notes:} Panel of 155 countries $\times$ 33 years. Coverage is the share of country-years with a value after interpolating interior gaps of at most 3 years. WDI: World Development Indicators.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}

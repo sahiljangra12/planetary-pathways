@@ -1,0 +1,32 @@
+[project]
+name = "planetary-pathways"
+version = "3.0.0"
+description = "Social shortfall, climate overshoot and decoupling across 155 countries, 1990-2022"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=2.0", "pandas>=2.2", "scipy>=1.13", "statsmodels>=0.14", "linearmodels>=6.0",
+  "scikit-learn>=1.5", "matplotlib>=3.9", "openpyxl>=3.1", "country_converter>=1.2", "adjustText>=1.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+filterwarnings = ["ignore::FutureWarning", "ignore::DeprecationWarning", "ignore::RuntimeWarning"]
+
+[tool.ruff]
+line-length = 120
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["B008"]

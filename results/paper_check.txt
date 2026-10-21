@@ -1,0 +1,32 @@
+macros used: 204, defined: 204
+MISSING macros: none
+unused macros: none
+UNKNOWN citation keys: none
+uncited bib entries: none
+
+typed numbers outside macros (years excluded): 187
+  reviewed, cited literature value (verified against source): 16
+  reviewed, cited value (O'Neill 2018 boundary): 1
+  reviewed, confidence level (95%): 11
+  reviewed, data access date: 1
+  reviewed, definition (50% probability): 1
+  reviewed, definition (GWP100): 1
+  reviewed, definition (UN membership): 1
+  reviewed, definition (employment = 100 - unemployment): 2
+  reviewed, descriptive fact (India population 2022, WDI 1.43 bn): 1
+  reviewed, label: 41
+  reviewed, layout: 14
+  reviewed, methodological parameter: 6
+  reviewed, methodological parameter (5% tolerance): 3
+  reviewed, methodological parameter (near-miss band): 2
+  reviewed, notation: 23
+  reviewed, reproducibility record: 1
+  reviewed, social threshold (definition): 19
+  reviewed, temperature target label: 10
+  reviewed, unit: 19
+  reviewed, verification record (WDI comparison): 1
+  reviewed, verification record (appendix): 6
+  reviewed, worked arithmetic example (verified): 6
+  reviewed, worked interpretation (10% rise in emissions): 1
+UNREVIEWED typed numbers: 0
+stale review entries: 0

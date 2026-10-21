@@ -1,0 +1,16 @@
+{
+  "run_utc": "2026-10-21T05:59:36+00:00",
+  "python": "3.13.16",
+  "pandas": "3.0.5",
+  "numpy": "2.5.3",
+  "bootstrap_reps": 2000,
+  "inputs": {
+    "data_sources.xlsx": "afa6abd5a5e4fb556c5fa5eeb51e8bebb318be49454f2b343b6c8d7ea5212dd6",
+    "owid-co2-codebook.csv": "33b4f5e00efd58c7b83863f736beba1af4df946b43642b0400c3ec38648e0e8e",
+    "owid-co2-data.csv": "7f78e2b218ce4bb8c538bbec04fdc9a7982e8d40bff972e650df603899edd5f6",
+    "owid-energy-codebook.csv": "3cc9b7db0d921496e2988568ce3aee5ed41f50431dd234a0663b5f0a4b2e32bb",
+    "owid-energy-data.csv": "266f2e2baad7975351bc9bb4aa061d22b1da9fe4c47d51d2ac6071e01e171f76",
+    "sovereign_states.csv": "561726e2ead2724ebfa6c434470ad0bc6ae51bd1b462bd57813fb2bd02f17a60",
+    "thesis_dataset.xlsx": "18bdfc0ad986a649d160f725c6161cc3a0cd7832cb4a54eb0cb8982c9005ec81"
+  }
+}

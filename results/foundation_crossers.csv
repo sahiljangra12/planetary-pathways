@@ -1,0 +1,37 @@
+iso3,country,year,co2_cons_pc,overshoot
+ARE,United Arab Emirates,1999,31.268,True
+AUS,Australia,2003,17.281,True
+AZE,Azerbaijan,2022,3.667,True
+BEL,Belgium,2018,18.542,True
+BGR,Bulgaria,2018,5.851,True
+BLR,Belarus,2017,7.246,True
+CAN,Canada,2018,14.925,True
+CHL,Chile,1993,2.56,True
+CHN,China,2005,3.547,True
+CZE,Czechia,2007,12.07,True
+DNK,Denmark,1997,12.924,True
+ECU,Ecuador,2006,2.413,True
+EST,Estonia,2017,13.014,True
+GBR,United Kingdom,2000,12.515,True
+HUN,Hungary,2016,6.182,True
+IRL,Ireland,1999,15.759,True
+ISR,Israel,2014,10.947,True
+KOR,"Korea, Rep.",1996,11.025,True
+KWT,Kuwait,1992,18.37,True
+LKA,Sri Lanka,2016,1.986,True
+LTU,Lithuania,2022,7.846,True
+MEX,Mexico,2012,4.963,True
+MYS,Malaysia,2004,5.538,True
+NLD,Netherlands,1992,12.32,True
+NZL,New Zealand,2001,8.824,True
+OMN,Oman,2002,8.126,True
+PER,Peru,2018,2.213,True
+POL,Poland,2017,8.295,True
+QAT,Qatar,1993,52.742,True
+ROU,Romania,2016,4.024,True
+SAU,Saudi Arabia,2004,18.032,True
+SVK,Slovak Republic,2019,7.12,True
+SVN,Slovenia,2001,10.247,True
+THA,Thailand,2009,3.398,True
+USA,United States,1995,20.084,True
+VNM,Viet Nam,2017,1.807,True

@@ -1,0 +1,318 @@
+\begin{thebibliography}{40}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bolt and van Zanden(2025)]{bolt2025}
+Jutta Bolt and Jan~Luiten van Zanden.
+\newblock Maddison-style estimates of the evolution of the world economy: A new
+  2023 update.
+\newblock \emph{Journal of Economic Surveys}, 39\penalty0 (2):\penalty0
+  631--671, 2025.
+\newblock \doi{10.1111/joes.12618}.
+
+\bibitem[Cameron et~al.(2008)Cameron, Gelbach, and Miller]{cameron2008}
+A.~Colin Cameron, Jonah~B. Gelbach, and Douglas~L. Miller.
+\newblock Bootstrap-based improvements for inference with clustered errors.
+\newblock \emph{The Review of Economics and Statistics}, 90\penalty0
+  (3):\penalty0 414--427, 2008.
+\newblock \doi{10.1162/rest.90.3.414}.
+
+\bibitem[Dietz and Rosa(1997)]{dietz1997}
+Thomas Dietz and Eugene~A. Rosa.
+\newblock Effects of population and affluence on {CO$_2$} emissions.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 94\penalty0
+  (1):\penalty0 175--179, 1997.
+\newblock \doi{10.1073/pnas.94.1.175}.
+
+\bibitem[Fanning and Raworth(2025)]{fanning2025}
+Andrew~L. Fanning and Kate Raworth.
+\newblock Doughnut of social and planetary boundaries monitors a world out of
+  balance.
+\newblock \emph{Nature}, 646\penalty0 (8083):\penalty0 47--56, 2025.
+\newblock \doi{10.1038/s41586-025-09385-1}.
+
+\bibitem[Fanning et~al.(2022)Fanning, O'Neill, Hickel, and Roux]{fanning2022}
+Andrew~L. Fanning, Daniel~W. O'Neill, Jason Hickel, and Nicolas Roux.
+\newblock The social shortfall and ecological overshoot of nations.
+\newblock \emph{Nature Sustainability}, 5\penalty0 (1):\penalty0 26--36, 2022.
+\newblock \doi{10.1038/s41893-021-00799-z}.
+
+\bibitem[Fraley and Raftery(2002)]{fraley2002}
+Chris Fraley and Adrian~E. Raftery.
+\newblock Model-based clustering, discriminant analysis, and density
+  estimation.
+\newblock \emph{Journal of the American Statistical Association}, 97\penalty0
+  (458):\penalty0 611--631, 2002.
+\newblock \doi{10.1198/016214502760047131}.
+
+\bibitem[Friedlingstein et~al.(2026)]{friedlingstein2026}
+Pierre Friedlingstein et~al.
+\newblock Global carbon budget 2025.
+\newblock \emph{Earth System Science Data}, 18\penalty0 (5):\penalty0
+  3211--3288, 2026.
+\newblock \doi{10.5194/essd-18-3211-2026}.
+
+\bibitem[Grossman and Krueger(1995)]{grossman1995}
+Gene~M. Grossman and Alan~B. Krueger.
+\newblock Economic growth and the environment.
+\newblock \emph{The Quarterly Journal of Economics}, 110\penalty0 (2):\penalty0
+  353--377, 1995.
+\newblock \doi{10.2307/2118443}.
+
+\bibitem[Haberl et~al.(2020)Haberl, Wiedenhofer, Vir{\'a}g, Kalt, Plank,
+  Brockway, Fishman, Hausknost, Krausmann, Leon-Gruchalski, et~al.]{haberl2020}
+Helmut Haberl, Dominik Wiedenhofer, Doris Vir{\'a}g, Gerald Kalt, Barbara
+  Plank, Paul Brockway, Tomer Fishman, Daniel Hausknost, Fridolin Krausmann,
+  Bartholom{\"a}us Leon-Gruchalski, et~al.
+\newblock A systematic review of the evidence on decoupling of {GDP}, resource
+  use and {GHG} emissions, part {II}: synthesizing the insights.
+\newblock \emph{Environmental Research Letters}, 15\penalty0 (6):\penalty0
+  065003, 2020.
+\newblock \doi{10.1088/1748-9326/ab842a}.
+
+\bibitem[H{\"a}yh{\"a} et~al.(2016)H{\"a}yh{\"a}, Lucas, van Vuuren, Cornell,
+  and Hoff]{haeyhae2016}
+Tiina H{\"a}yh{\"a}, Paul~L. Lucas, Detlef~P. van Vuuren, Sarah~E. Cornell, and
+  Holger Hoff.
+\newblock From {Planetary Boundaries} to national fair shares of the global
+  safe operating space---how can the scales be bridged?
+\newblock \emph{Global Environmental Change}, 40:\penalty0 60--72, 2016.
+\newblock \doi{10.1016/j.gloenvcha.2016.06.008}.
+
+\bibitem[Hickel and Kallis(2020)]{hickel2020green}
+Jason Hickel and Giorgos Kallis.
+\newblock Is green growth possible?
+\newblock \emph{New Political Economy}, 25\penalty0 (4):\penalty0 469--486,
+  2020.
+\newblock \doi{10.1080/13563467.2019.1598964}.
+
+\bibitem[Hickel et~al.(2022)Hickel, O'Neill, Fanning, and
+  Zoomkawala]{hickel2022}
+Jason Hickel, Daniel~W. O'Neill, Andrew~L. Fanning, and Huzaifa Zoomkawala.
+\newblock National responsibility for ecological breakdown: a fair-shares
+  assessment of resource use, 1970--2017.
+\newblock \emph{The Lancet Planetary Health}, 6\penalty0 (4):\penalty0
+  e342--e349, 2022.
+\newblock \doi{10.1016/S2542-5196(22)00044-4}.
+
+\bibitem[Hubert and Arabie(1985)]{hubert1985}
+Lawrence Hubert and Phipps Arabie.
+\newblock Comparing partitions.
+\newblock \emph{Journal of Classification}, 2\penalty0 (1):\penalty0 193--218,
+  1985.
+\newblock \doi{10.1007/BF01908075}.
+
+\bibitem[{IPCC}(2021)]{ipcc2021spm}
+{IPCC}.
+\newblock Summary for policymakers.
+\newblock In V.~Masson-Delmotte, P.~Zhai, A.~Pirani, et~al., editors,
+  \emph{Climate Change 2021: The Physical Science Basis. Contribution of
+  Working Group {I} to the Sixth Assessment Report of the Intergovernmental
+  Panel on Climate Change}, pages 3--32. Cambridge University Press, 2021.
+\newblock \doi{10.1017/9781009157896.001}.
+
+\bibitem[Jones et~al.(2023)Jones, Peters, Gasser, Andrew, Schwingshackl,
+  G{\"u}tschow, Houghton, Friedlingstein, Pongratz, and
+  Le~Qu{\'e}r{\'e}]{jones2023}
+Matthew~W. Jones, Glen~P. Peters, Thomas Gasser, Robbie~M. Andrew, Clemens
+  Schwingshackl, Johannes G{\"u}tschow, Richard~A. Houghton, Pierre
+  Friedlingstein, Julia Pongratz, and Corinne Le~Qu{\'e}r{\'e}.
+\newblock National contributions to climate change due to historical emissions
+  of carbon dioxide, methane, and nitrous oxide since 1850.
+\newblock \emph{Scientific Data}, 10:\penalty0 155, 2023.
+\newblock \doi{10.1038/s41597-023-02041-1}.
+
+\bibitem[Jorgenson(2014)]{jorgenson2014}
+Andrew~K. Jorgenson.
+\newblock Economic development and the carbon intensity of human well-being.
+\newblock \emph{Nature Climate Change}, 4\penalty0 (3):\penalty0 186--189,
+  2014.
+\newblock \doi{10.1038/nclimate2110}.
+
+\bibitem[Kikstra et~al.(2021)Kikstra, Mastrucci, Min, Riahi, and
+  Rao]{kikstra2021}
+Jarmo~S. Kikstra, Alessio Mastrucci, Jihoon Min, Keywan Riahi, and Narasimha~D.
+  Rao.
+\newblock Decent living gaps and energy needs around the world.
+\newblock \emph{Environmental Research Letters}, 16\penalty0 (9):\penalty0
+  095006, 2021.
+\newblock \doi{10.1088/1748-9326/ac1c27}.
+
+\bibitem[Lamb and Rao(2015)]{lamb2015}
+William~F. Lamb and Narasimha~D. Rao.
+\newblock Human development in a climate-constrained world: What the past says
+  about the future.
+\newblock \emph{Global Environmental Change}, 33:\penalty0 14--22, 2015.
+\newblock \doi{10.1016/j.gloenvcha.2015.03.010}.
+
+\bibitem[MacKinnon and White(1985)]{mackinnon1985}
+James~G. MacKinnon and Halbert White.
+\newblock Some heteroskedasticity-consistent covariance matrix estimators with
+  improved finite sample properties.
+\newblock \emph{Journal of Econometrics}, 29\penalty0 (3):\penalty0 305--325,
+  1985.
+\newblock \doi{10.1016/0304-4076(85)90158-7}.
+
+\bibitem[Millward-Hopkins et~al.(2020)Millward-Hopkins, Steinberger, Rao, and
+  Oswald]{millwardhopkins2020}
+Joel Millward-Hopkins, Julia~K. Steinberger, Narasimha~D. Rao, and Yannick
+  Oswald.
+\newblock Providing decent living with minimum energy: A global scenario.
+\newblock \emph{Global Environmental Change}, 65:\penalty0 102168, 2020.
+\newblock \doi{10.1016/j.gloenvcha.2020.102168}.
+
+\bibitem[O'Neill et~al.(2018)O'Neill, Fanning, Lamb, and
+  Steinberger]{oneill2018}
+Daniel~W. O'Neill, Andrew~L. Fanning, William~F. Lamb, and Julia~K.
+  Steinberger.
+\newblock A good life for all within planetary boundaries.
+\newblock \emph{Nature Sustainability}, 1\penalty0 (2):\penalty0 88--95, 2018.
+\newblock \doi{10.1038/s41893-018-0021-4}.
+
+\bibitem[{Our World in Data}(2025)]{owid2025co2}
+{Our World in Data}.
+\newblock {CO$_2$} and greenhouse gas emissions dataset.
+\newblock \url{https://github.com/owid/co2-data}, 2025.
+\newblock Compiles Global Carbon Budget 2025, Jones et al. (2025) and Maddison
+  Project 2023; accessed 20 October 2026.
+
+\bibitem[Peters et~al.(2011)Peters, Minx, Weber, and Edenhofer]{peters2011}
+Glen~P. Peters, Jan~C. Minx, Christopher~L. Weber, and Ottmar Edenhofer.
+\newblock Growth in emission transfers via international trade from 1990 to
+  2008.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 108\penalty0
+  (21):\penalty0 8903--8908, 2011.
+\newblock \doi{10.1073/pnas.1006388108}.
+
+\bibitem[Porcher et~al.(2026)Porcher, Boroumand, Gemenne, Giraldi, and
+  Porcher]{porcher2026}
+Thomas Porcher, Rapha{\"e}l-Homayoun Boroumand, Fran{\c{c}}ois Gemenne, Antoine
+  Giraldi, and Simon Porcher.
+\newblock The champagne curve of climate and development inequalities.
+\newblock \emph{Applied Economics Letters}, 33\penalty0 (14):\penalty0
+  2509--2517, 2026.
+\newblock \doi{10.1080/13504851.2025.2476752}.
+
+\bibitem[Rao and Min(2018)]{rao2018}
+Narasimha~D. Rao and Jihoon Min.
+\newblock Decent living standards: material prerequisites for human wellbeing.
+\newblock \emph{Social Indicators Research}, 138\penalty0 (1):\penalty0
+  225--244, 2018.
+\newblock \doi{10.1007/s11205-017-1650-0}.
+
+\bibitem[Raworth(2012)]{raworth2012}
+Kate Raworth.
+\newblock A safe and just space for humanity: Can we live within the doughnut?
+\newblock Oxfam discussion paper, Oxfam, Oxford, 2012.
+
+\bibitem[Raworth(2017)]{raworth2017}
+Kate Raworth.
+\newblock \emph{Doughnut Economics: Seven Ways to Think Like a 21st-Century
+  Economist}.
+\newblock Chelsea Green Publishing, White River Junction, VT, 2017.
+
+\bibitem[Richardson et~al.(2023)Richardson, Steffen, Lucht, Bendtsen, Cornell,
+  Donges, Dr{\"u}ke, Fetzer, Bala, von Bloh, et~al.]{richardson2023}
+Katherine Richardson, Will Steffen, Wolfgang Lucht, J{\o}rgen Bendtsen,
+  Sarah~E. Cornell, Jonathan~F. Donges, Markus Dr{\"u}ke, Ingo Fetzer,
+  Govindasamy Bala, Werner von Bloh, et~al.
+\newblock Earth beyond six of nine planetary boundaries.
+\newblock \emph{Science Advances}, 9\penalty0 (37):\penalty0 eadh2458, 2023.
+\newblock \doi{10.1126/sciadv.adh2458}.
+
+\bibitem[Rockstr{\"o}m et~al.(2009)Rockstr{\"o}m, Steffen, Noone, Persson,
+  Chapin, Lambin, Lenton, Scheffer, Folke, Schellnhuber, et~al.]{rockstrom2009}
+Johan Rockstr{\"o}m, Will Steffen, Kevin Noone, {\AA}sa Persson, F.~Stuart
+  Chapin, Eric~F. Lambin, Timothy~M. Lenton, Marten Scheffer, Carl Folke,
+  Hans~Joachim Schellnhuber, et~al.
+\newblock A safe operating space for humanity.
+\newblock \emph{Nature}, 461\penalty0 (7263):\penalty0 472--475, 2009.
+\newblock \doi{10.1038/461472a}.
+
+\bibitem[Steffen et~al.(2015)Steffen, Richardson, Rockstr{\"o}m, Cornell,
+  Fetzer, Bennett, Biggs, Carpenter, de~Vries, de~Wit, et~al.]{steffen2015}
+Will Steffen, Katherine Richardson, Johan Rockstr{\"o}m, Sarah~E. Cornell, Ingo
+  Fetzer, Elena~M. Bennett, Reinette Biggs, Stephen~R. Carpenter, Wim de~Vries,
+  Cynthia~A. de~Wit, et~al.
+\newblock Planetary boundaries: Guiding human development on a changing planet.
+\newblock \emph{Science}, 347\penalty0 (6223):\penalty0 1259855, 2015.
+\newblock \doi{10.1126/science.1259855}.
+
+\bibitem[Steinberger and Roberts(2010)]{steinberger2010}
+Julia~K. Steinberger and J.~Timmons Roberts.
+\newblock From constraint to sufficiency: The decoupling of energy and carbon
+  from human needs, 1975--2005.
+\newblock \emph{Ecological Economics}, 70\penalty0 (2):\penalty0 425--433,
+  2010.
+\newblock \doi{10.1016/j.ecolecon.2010.09.014}.
+
+\bibitem[Steinberger et~al.(2020)Steinberger, Lamb, and Sakai]{steinberger2020}
+Julia~K. Steinberger, William~F. Lamb, and Marco Sakai.
+\newblock Your money or your life? {The} carbon-development paradox.
+\newblock \emph{Environmental Research Letters}, 15\penalty0 (4):\penalty0
+  044016, 2020.
+\newblock \doi{10.1088/1748-9326/ab7461}.
+
+\bibitem[Stern(2004)]{stern2004}
+David~I. Stern.
+\newblock The rise and fall of the environmental {Kuznets} curve.
+\newblock \emph{World Development}, 32\penalty0 (8):\penalty0 1419--1439, 2004.
+\newblock \doi{10.1016/j.worlddev.2004.03.004}.
+
+\bibitem[{United Nations}(2015)]{un2015sdg}
+{United Nations}.
+\newblock Transforming our world: the 2030 agenda for sustainable development.
+\newblock Resolution A/RES/70/1, 2015.
+
+\bibitem[{United Nations Development Programme}(2020)]{undp2020}
+{United Nations Development Programme}.
+\newblock \emph{Human Development Report 2020. The Next Frontier: Human
+  Development and the Anthropocene}.
+\newblock UNDP, New York, 2020.
+
+\bibitem[Vogel and Hickel(2023)]{vogel2023}
+Jefim Vogel and Jason Hickel.
+\newblock Is green growth happening? {An} empirical analysis of achieved versus
+  {Paris}-compliant {CO$_2$}--{GDP} decoupling in high-income countries.
+\newblock \emph{The Lancet Planetary Health}, 7\penalty0 (9):\penalty0
+  e759--e769, 2023.
+\newblock \doi{10.1016/S2542-5196(23)00174-2}.
+
+\bibitem[Vogel et~al.(2021)Vogel, Steinberger, O'Neill, Lamb, and
+  Krishnakumar]{vogel2021}
+Jefim Vogel, Julia~K. Steinberger, Daniel~W. O'Neill, William~F. Lamb, and Jaya
+  Krishnakumar.
+\newblock Socio-economic conditions for satisfying human needs at low energy
+  use: An international analysis of social provisioning.
+\newblock \emph{Global Environmental Change}, 69:\penalty0 102287, 2021.
+\newblock \doi{10.1016/j.gloenvcha.2021.102287}.
+
+\bibitem[Wiedenhofer et~al.(2020)Wiedenhofer, Vir{\'a}g, Kalt, Plank, Streeck,
+  Pichler, Mayer, Krausmann, Brockway, Schaffartzik, et~al.]{wiedenhofer2020}
+Dominik Wiedenhofer, Doris Vir{\'a}g, Gerald Kalt, Barbara Plank, Jan Streeck,
+  Melanie Pichler, Andreas Mayer, Fridolin Krausmann, Paul Brockway, Anke
+  Schaffartzik, et~al.
+\newblock A systematic review of the evidence on decoupling of {GDP}, resource
+  use and {GHG} emissions, part {I}: bibliometric and conceptual mapping.
+\newblock \emph{Environmental Research Letters}, 15\penalty0 (6):\penalty0
+  063002, 2020.
+\newblock \doi{10.1088/1748-9326/ab8429}.
+
+\bibitem[Wiedmann et~al.(2020)Wiedmann, Lenzen, Key{\ss}er, and
+  Steinberger]{wiedmann2020}
+Thomas Wiedmann, Manfred Lenzen, Lorenz~T. Key{\ss}er, and Julia~K.
+  Steinberger.
+\newblock Scientists' warning on affluence.
+\newblock \emph{Nature Communications}, 11:\penalty0 3107, 2020.
+\newblock \doi{10.1038/s41467-020-16941-y}.
+
+\bibitem[{World Bank}(2024)]{worldbank2024wdi}
+{World Bank}.
+\newblock World development indicators.
+\newblock World Bank DataBank, \url{https://databank.worldbank.org}, 2024.
+\newblock Extract compiled April 2026.
+
+\end{thebibliography}

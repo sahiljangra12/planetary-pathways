@@ -1,0 +1,99 @@
+% ======================================================================
+\section{Variable definitions and sources}\label{app:data}
+
+\Cref{tab:vardefs} gives the exact definition, unit and source of each variable used in the analysis.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Variable definitions and sources.}
+\label{tab:vardefs}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.19\linewidth}>{\raggedright\arraybackslash}p{0.37\linewidth}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}}
+\toprule
+Variable & Definition & Unit & Source (series) \\
+\midrule
+Life expectancy & Life expectancy at birth, total & Years & WDI (SP.DYN.LE00.IN), UN WPP \\
+Under-5 mortality & Probability of dying before age five & Per 1{,}000 live births & WDI (SH.DYN.MORT), UN IGME \\
+Access to electricity & Share of population with access to electricity & \% & WDI (EG.ELC.ACCS.ZS) \\
+Employment & 100 minus the unemployment rate, total, modelled ILO estimate & \% of labour force & WDI (SL.UEM.TOTL.ZS), ILO \\
+Secondary enrolment$^a$ & Gross enrolment ratio, secondary & \% & WDI (SE.SEC.ENRR), UNESCO UIS \\
+Consumption-based \COtwo{} & Fossil and industrial \COtwo{}, adjusted for emissions embodied in trade, per person & t per person per year & Global Carbon Budget 2025 \\
+Production-based \COtwo{} & Territorial fossil and industrial \COtwo{} per person & t per person per year & Global Carbon Budget 2025 \\
+GHG including land use & \COtwo, CH$_4$ and N$_2$O including land use, per person & t \COtwo-eq.\ (GWP$_{100}$) & \citet{jones2023} \\
+GDP per person & Real GDP per person at purchasing power parity & 2011 int.\ \$ & Maddison Project 2023 \\
+Population & Total population & Persons & Our World in Data; WDI \\
+Continent & Continent of each country, used for descriptive breakdowns & -- & \texttt{country\_converter} \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{0.95\linewidth}\vspace{3pt}\footnotesize\textit{Notes:} $^a$Robustness check only. WDI: World Development Indicators; WPP: World Population Prospects; IGME: Inter-agency Group for Child Mortality Estimation; UIS: Institute for Statistics. Emissions and GDP were obtained through \citet{owid2025co2}.\end{minipage}
+\end{table}
+
+% ======================================================================
+\section{Country-level results}\label{app:countries}
+
+\Cref{tab:countries} lists, for every country in the sample, its 2011--2022 averages of emissions and the four social indicators, and its configuration in each period. Countries without consumption-based emissions estimates are listed with their production-based emissions and are unclassified.
+
+\input{../results/tables/tab_countries.tex}
+
+% ======================================================================
+\section{Decoupling by country}\label{app:decoupling}
+
+\Cref{tab:deccountries} gives the decoupling results for every country with consumption-based emissions in 2011--2022.
+
+\input{../results/tables/tab_decoupling_countries.tex}
+
+% ======================================================================
+\section{Additional results}\label{app:extra}
+
+\subsection{Annual estimates of the carbon requirement}
+
+\Cref{tab:reqannual} lists the annual cross-sectional estimates of the carbon requirement for the main specification, with their bootstrap intervals and the number of failed bootstrap replications, alongside the estimate for each year from the pooled model.
+
+\input{../results/tables/tab_requirement_annual.tex}
+
+For the health foundation, \nReqBootFailHealth{} of \nReqBootTotalHealth{} annual bootstrap replications failed and \nPooledBootFailHealth{} of the pooled replications. For the production-based specification, \nReqBootFailProd{} of \nReqBootTotalProd{} annual replications failed and \nPooledBootFailProd{} of the pooled replications. Failed point estimates: \nReqPointFailMain{} in the main specification, \nReqPointFailHealth{} for the health foundation and \nReqPointFailProd{} with production-based emissions. The pooled models use \nPooledNMain{} country-years from \nPooledCountriesMain{} countries in the main specification, of which \nPooledMetMain{} meet the social foundation.
+
+\subsection{Long differences}
+
+\input{../results/tables/tab_longdiff.tex}
+
+\subsection{Mixture-model check}
+
+\Cref{fig:gmm} shows the Bayesian information criterion for Gaussian mixture models with one to eight components, fitted to standardised log consumption-based emissions and mean social attainment for all classified country-periods.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\textwidth]{../figures/figA2_gmm_bic.pdf}
+\caption{Bayesian information criterion of Gaussian mixture models fitted to standardised log consumption-based \COtwo{} per person and mean social attainment (country-period means). Lower values indicate a better trade-off between fit and complexity.}
+\label{fig:gmm}
+\end{figure}
+
+% ======================================================================
+\section{Reproducibility}\label{app:repro}
+
+The analysis is implemented as a Python package, run with a single command. The pipeline performs the following steps in order:
+\begin{enumerate}
+\item It deletes all previous outputs, so that every result file comes from the current run.
+\item It loads the raw input files, whose SHA-256 checksums are recorded, and builds the country-year panel. This involves selecting the sample by ISO code and population, merging the sources and applying the interpolation rules.
+\item It computes the attainment ratios, overshoot and configurations, for each year and for period averages.
+\item It runs all analyses with fixed random seeds: configurations and transitions, the carbon requirement, fixed-effects and long-difference models, decoupling and scenarios, the mixture check and the robustness specifications.
+\item It writes every result as a CSV file, every table as a \LaTeX{} file, every figure as PDF and PNG, and every number quoted in the text as a \LaTeX{} macro, which the manuscript reads.
+\end{enumerate}
+
+The test suite checks:
+\begin{itemize}
+\item that the sample contains only UN member states and Palestine, includes known members and meets the population rule;
+\item that the panel is a complete, duplicate-free country-year grid and that the periods neither overlap nor mislabel their years;
+\item that GDP is in constant purchasing-power-parity terms;
+\item that interpolation never extrapolates and respects its gap limits;
+\item that each attainment ratio points in the right direction and that zero mortality counts as full attainment;
+\item that the classification rules behave correctly, including with missing data and at the tolerance cut-off;
+\item that the carbon requirement estimators recover known values from simulated data;
+\item that failed logistic fits are detected;
+\item that the decoupling classification and scenario arithmetic are correct;
+\item that the generated numbers file is valid.
+\end{itemize}
+Three further checks are part of the package. A static check of the manuscript confirms that every number macro used in the text is defined and every defined macro is used, that every citation exists in the bibliography and every bibliography entry is cited, and that every number typed directly in the text (rather than read from a macro) has been reviewed and assigned to a category such as threshold, definition, label, notation or quoted literature value. An independent re-implementation, written without the analysis package and using only the raw files, re-derives the sample sizes, configuration shares, transitions, foundation crossers, frontier, carbon requirement and its trend, robustness levels, decoupling counts, scenarios and fixed-effects coefficients, and compares each with the numbers in the text; all 54 comparisons agree. Finally, the social indicators in the World Development Indicators extract were compared with the October 2026 release from the World Bank's data service for the 18 countries whose classification is closest to a threshold (410 country-year values). Life expectancy and unemployment were identical, electricity access differed in one value by 0.1 percentage points, and under-5 mortality had been revised by up to 2 deaths per 1{,}000 live births in the newer release. Replacing the extract's values by the newer ones changes no classification.
+
+The complete pipeline was run from scratch in three environments: the development environment (Python 3.13); a fresh virtual environment built only from the pinned package versions (Python 3.13); and a fresh environment on Python 3.11 with the newest compatible library versions. In each run the input checksums were verified, all tests passed, the manuscript check passed and the independent re-implementation agreed on all comparisons. The two runs with the pinned versions produced byte-identical numbers, tables, result files and analysis panel. The Python 3.11 run produced identical numbers and tables; five of its result files differ from the others only in the last digits of floating-point values (by less than $10^{-9}$), which do not affect any reported number. Rendered figure images can differ by a few pixels between environments because of font rasterisation; the data they plot are identical.

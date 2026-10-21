@@ -1,0 +1,24 @@
+\begin{table}[tbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\caption{Estimation samples and inference for each analysis.}
+\label{tab:samples}
+\begin{threeparttable}
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}p{0.2\linewidth}>{\raggedright\arraybackslash}p{0.22\linewidth}}
+\toprule
+Analysis & Sample & Size & Uncertainty and failures \\
+\midrule
+Configurations, annual (Fig.~\ref{fig:shares}) & Balanced panel, 1991--2022 & 112 countries $\times$ 32 years & Descriptive; no sampling inference \\
+Configurations, period means (Table~\ref{tab:counts}) & Consumption sample & 341 country-periods & Descriptive \\
+Annual carbon requirement (Fig.~\ref{fig:requirement}) & Classified country-years, years with $\geq$90 countries & 112--114 countries per year & Country bootstrap{,} 2{,}000 reps; 14 failed fits \\
+Pooled carbon requirement (headline) & Same, pooled 1991--2022 & 3{,}632 obs.{,} 114 countries & Country-cluster bootstrap{,} 2{,}000 reps; 0 failed \\
+Fixed-effects models (Table~\ref{tab:fe}) & Country-years with outcome, CO$_2$ and GDP & 3{,}724--5{,}102 obs. & Clustered by country \\
+Long differences (Table~\ref{tab:longdiff}) & Countries observed in both end periods & 113--149 countries & HC3 \\
+Decoupling (Table~\ref{tab:decoupling}) & $\geq$ 8 years in window & 114 and 114 countries & OLS trend CIs \\
+Mixture check (Appendix) & Classified country-periods & 341 country-periods & 200 bootstrap refits \\
+Robustness (Table~\ref{tab:robustness}) & Varies by specification & 9 specifications & Cluster bootstrap, 500 reps each \\
+\bottomrule
+\end{tabular}
+\end{threeparttable}
+\end{table}
