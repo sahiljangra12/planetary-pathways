@@ -93,59 +93,6 @@
     });
   })();
 
-  // ------------------------------------------------------------- carbon requirement
-  (function req() {
-    const svg = document.getElementById('req');
-    if (!svg) return;
-    const W = 680, H = 420, m = { l: 44, r: 16, t: 14, b: 30 };
-    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    const lo = Math.log(0.5), hi = Math.log(300);
-    const x = v => m.l + (v - 1991) / (2022 - 1991) * (W - m.l - m.r);
-    const y = v => m.t + (1 - (Math.log(Math.max(v, 0.5)) - lo) / (hi - lo)) * (H - m.t - m.b);
-    const ax = svgEl('g', { class: 'axis' }, svg);
-    [0.5, 1, 2, 5, 10, 20, 50, 100, 300].forEach(v => { svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = v; });
-    [1991, 2000, 2010, 2022].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v; });
-    [[B, '1.61 t · 2 °C boundary', '#ffb454'], [B15, '0.79 t · 1.5 °C', '#8a8f99']].forEach(([v, l, c]) => {
-      svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: c, 'stroke-dasharray': '5 5' }, svg);
-      const t = svgEl('text', { x: W - m.r, y: y(v) - 6, 'text-anchor': 'end', fill: c, 'font-size': 11, 'font-family': 'Barlow', 'letter-spacing': '.08em' }, svg); t.textContent = l.toUpperCase();
-    });
-    const layer = svgEl('g', {}, svg);
-    // pooled trend from the main robustness row: level in 2022 and annual % change
-    const main = D.rob[0], end = +main[2], g = +main[3] / 100;
-    function draw(series) {
-      layer.innerHTML = '';
-      const pts = D.req[series];
-      const col = series === 'main' ? '#ffffff' : '#5fd1b0';
-      const gp = svgEl('g', {}, layer);
-      pts.forEach((p, k) => {
-        const [yr, est, l, h] = p;
-        const wl = svgEl('line', { x1: x(yr), x2: x(yr), y1: y(l), y2: y(h), stroke: col, 'stroke-opacity': .28, 'stroke-width': 2 }, gp);
-        const c = svgEl('circle', { cx: x(yr), cy: y(est), r: 3.6, fill: col, opacity: 0 }, gp);
-        c.style.transition = `opacity .4s ${k * 0.03}s`; wl.style.transition = c.style.transition; wl.setAttribute('opacity', 0);
-        requestAnimationFrame(() => requestAnimationFrame(() => { c.setAttribute('opacity', 1); wl.setAttribute('opacity', 1); }));
-        c.addEventListener('pointerenter', e => showTip(`<b>${yr}</b>${fmt(est)} t (95% CI ${fmt(l)}–${fmt(h)})`, e.clientX, e.clientY));
-        c.addEventListener('pointerleave', hideTip);
-      });
-      if (series === 'main') {
-        const d = [];
-        for (let yr = 1991; yr <= 2022; yr++) d.push([x(yr), y(end / Math.pow(1 + g, 2022 - yr))]);
-        const p = svgEl('path', { d: 'M' + d.map(q => q.join(',')).join('L'), fill: 'none', stroke: '#fff', 'stroke-width': 3, class: 'draw' }, layer);
-        const len = p.getTotalLength(); p.style.setProperty('--len', len);
-        requestAnimationFrame(() => requestAnimationFrame(() => p.style.strokeDashoffset = 0));
-        const a = end / Math.pow(1 + g, 2022 - 1991);
-        [[1991, a, `≈${Math.round(a)} t`], [2022, end, `${fmt(end)} t`]].forEach(([yr, v, l]) => {
-          const t = svgEl('text', { x: x(yr) + (yr === 1991 ? 8 : -8), y: y(v) - 12, 'text-anchor': yr === 1991 ? 'start' : 'end', fill: '#fff', 'font-family': 'Barlow Condensed', 'font-weight': 700, 'font-size': 22 }, layer);
-          t.textContent = l;
-        });
-      }
-    }
-    document.querySelectorAll('#reqviz [data-s]').forEach(b => b.addEventListener('click', () => {
-      document.querySelectorAll('#reqviz [data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
-      draw(b.dataset.s);
-    }));
-    onReveal(document.getElementById('reqviz'), () => draw('main'));
-  })();
-
   // ------------------------------------------------------------- decoupling dumbbell
   (function dec() {
     const svg = document.getElementById('dec');

@@ -16,7 +16,9 @@ sample's own distribution.
 
 ## Paper
 
-**Interactive site:** https://sahiljangra12.github.io/planetary-pathways/ (explore the evidence country by country and year by year; source in `docs/`).
+[![Study site: a night-side 3D Earth with countries glowing by configuration](docs/assets/img/site-preview.jpg)](https://sahiljangra12.github.io/planetary-pathways/)
+
+**[Open the study site →](https://sahiljangra12.github.io/planetary-pathways/)** An interactive essay on the results: an animated social–climate space for 114 countries (1991–2022), the 36 foundation crossings, a world map by year, the pooled carbon requirement with bootstrap bands, decoupling against the pace required, and country-by-country profiles. The full dashboard is at [`explorer.html`](https://sahiljangra12.github.io/planetary-pathways/explorer.html). Source in `docs/`; its data come from `docs/climate-data.js` and `docs/data/climate-extra.json`, built from `results/`.
 
 The compiled paper is [`paper/main.pdf`](paper/main.pdf). Headline results:
 
