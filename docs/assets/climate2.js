@@ -2,7 +2,7 @@
 (async function () {
   const D = window.CLIMATE;
   if (!D) return;
-  const X = await fetch('data/climate-extra.json').then(r => r.json());
+  const X = await fetch('data/climate-extra.json?v=20261119').then(r => r.json());
   const Y0 = 1990, B = 1.61, B15 = 0.79;
   const QN = ['Shortfall, within boundary', 'Shortfall and overshoot', 'Foundation met, overshoot', 'Safe and just'];
   const QC = ['#f2c14e', '#ef6f6c', '#5aa9ff', '#5fd1b0'];
