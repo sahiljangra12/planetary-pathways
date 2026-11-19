@@ -117,12 +117,12 @@ window.GLOSSARY = {
       'The thin green band for <span class="sw" style="background:#5fd1b0"></span>safe and just never appears: it is 0% in every year.'
     ]);
     const RO = Explain.readout(viz), TK = Explain.takeaway(viz);
-    const W = 1100, H = 360, m = { l: 44, r: 210, t: 12, b: 30 };
+    const W = MOB ? 600 : 1100, H = MOB ? 440 : 360, m = MOB ? { l: 58, r: 14, t: 14, b: 36 } : { l: 44, r: 210, t: 12, b: 30 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const x = y => m.l + (y - 1991) / (2022 - 1991) * (W - m.l - m.r), y = v => m.t + (1 - v) * (H - m.t - m.b);
     const ax = svgEl('g', { class: 'axis' }, svg);
     [0, .25, .5, .75, 1].forEach(v => { svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = Math.round(v * 100) + '%'; });
-    [1991, 1995, 2000, 2005, 2010, 2015, 2022].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v; });
+    (MOB ? [1991, 2000, 2010, 2022] : [1991, 1995, 2000, 2005, 2010, 2015, 2022]).forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': v === 2022 && MOB ? 'end' : v === 1991 && MOB ? 'start' : 'middle' }, ax); t.textContent = v; });
     const clip = svgEl('clipPath', { id: 'shclip' }, svgEl('defs', {}, svg));
     const cr = svgEl('rect', { x: 0, y: 0, width: 0, height: H }, clip);
     const g = svgEl('g', { 'clip-path': 'url(#shclip)' }, svg);
@@ -192,22 +192,23 @@ window.GLOSSARY = {
       ['Median cut required', fmt(mr) + '%', 'per year'],
       ['Speed-up needed', (mr / mg).toFixed(1) + '×', 'median country']
     ]);
-    const W = 1100, rh = 17, m = { l: 170, r: 30, t: 24, b: 30 }, H = m.t + m.b + rows.length * rh;
+    const W = MOB ? 600 : 1100, rh = MOB ? 30 : 17, m = MOB ? { l: 220, r: 18, t: 36, b: 42 } : { l: 170, r: 30, t: 24, b: 30 }, H = m.t + m.b + rows.length * rh;
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const xmin = -14, xmax = 0;
     const x = v => m.l + (Math.max(xmin, v) - xmin) / (xmax - xmin) * (W - m.l - m.r);
     const ax = svgEl('g', { class: 'axis' }, svg);
-    [-14, -12, -10, -8, -6, -4, -2, 0].forEach(v => { svgEl('line', { x1: x(v), x2: x(v), y1: m.t - 6, y2: H - m.b, stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v + '% / yr'; });
-    const ttl = svgEl('text', { x: x(-14), y: 12 }, ax); ttl.textContent = '← FASTER CUTS';
-    const ttr = svgEl('text', { x: x(0), y: 12, 'text-anchor': 'end' }, ax); ttr.textContent = 'SLOWER CUTS →';
+    (MOB ? [-12, -8, -4, 0] : [-14, -12, -10, -8, -6, -4, -2, 0]).forEach(v => { svgEl('line', { x1: x(v), x2: x(v), y1: m.t - 6, y2: H - m.b, stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': MOB && v === 0 ? 'end' : 'middle' }, ax); t.textContent = v + (MOB ? '%' : '% / yr'); });
+    const ttl = svgEl('text', { x: x(-14), y: MOB ? 20 : 12 }, ax); ttl.textContent = '← FASTER CUTS';
+    const ttr = svgEl('text', { x: x(0), y: MOB ? 20 : 12, 'text-anchor': 'end' }, ax); ttr.textContent = 'SLOWER →';
     const g = svgEl('g', {}, svg);
     rows.forEach((d, k) => {
       const yy = m.t + k * rh + rh / 2;
       if (k % 2 === 0) svgEl('rect', { x: 0, y: yy - rh / 2, width: W, height: rh, fill: 'rgba(255,255,255,.018)' }, g);
       const lab = svgEl('text', { x: m.l - 12, y: yy + 4, 'text-anchor': 'end', fill: d.ok ? '#5fd1b0' : '#a5a9b4', 'font-size': 12, 'font-family': 'Barlow' }, g); lab.textContent = d.n;
       const ln = svgEl('line', { x1: x(d.g), x2: x(d.g), y1: yy, y2: yy, stroke: d.ok ? '#5fd1b0' : 'rgba(255,180,84,.5)', 'stroke-width': 2 }, g);
-      const req = svgEl('rect', { x: x(d.req) - 4, y: yy - 4, width: 8, height: 8, fill: '#ffb454', transform: `rotate(45 ${x(d.req)} ${yy})`, opacity: 0 }, g);
-      const ach = svgEl('circle', { cx: x(d.g), cy: yy, r: 4.5, fill: d.ok ? '#5fd1b0' : '#fff' }, g);
+      const dq = MOB ? 6 : 4;
+      const req = svgEl('rect', { x: x(d.req) - dq, y: yy - dq, width: dq * 2, height: dq * 2, fill: '#ffb454', transform: `rotate(45 ${x(d.req)} ${yy})`, opacity: 0 }, g);
+      const ach = svgEl('circle', { cx: x(d.g), cy: yy, r: MOB ? 7 : 4.5, fill: d.ok ? '#5fd1b0' : '#fff' }, g);
       const tipH = `<b>${d.n}</b>Cut achieved: ${fmt(-d.g)}% a year<br>Cut needed for 1.61 t by 2050: ${fmt(-d.req)}% a year<br>${d.ok ? 'On track' : `Needs to cut ${(d.req / d.g).toFixed(1)}× faster`} · CO₂ in 2022: ${fmt(d.last)} t`;
       [ach, req, lab].forEach(n => { n.addEventListener('pointerenter', e => showTip(tipH, e.clientX, e.clientY)); n.addEventListener('pointerleave', hideTip); });
       ln.dataset.to = x(d.req);

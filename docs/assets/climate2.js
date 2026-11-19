@@ -45,13 +45,13 @@
       '<strong>Further right</strong> = more CO₂ per person. Left of the orange line is within the fair share of 1.61 t.'
     ]);
     const RO = Explain.readout(viz), TK = Explain.takeaway(viz);
-    const W = 1100, H = 580, m = { l: 62, r: 24, t: 40, b: 50 };
+    const W = MOB ? 600 : 1100, H = MOB ? 700 : 580, m = MOB ? { l: 46, r: 12, t: 56, b: 58 } : { l: 62, r: 24, t: 40, b: 50 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const lx0 = Math.log(0.04), lx1 = Math.log(60);
     const x = v => m.l + (Math.log(Math.max(0.04, v)) - lx0) / (lx1 - lx0) * (W - m.l - m.r);
     const y = v => m.t + (1 - (v - 0.3) / (1.02 - 0.3)) * (H - m.t - m.b);
     const ax = svgEl('g', { class: 'axis' }, svg);
-    [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 25, 50].forEach(v => {
+    (MOB ? [0.1, 0.5, 2.5, 10, 50] : [0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 25, 50]).forEach(v => {
       svgEl('line', { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b, stroke: 'rgba(255,255,255,.05)' }, ax);
       const t = svgEl('text', { x: x(v), y: H - m.b + 18, 'text-anchor': 'middle' }, ax); t.textContent = v;
     });
@@ -59,8 +59,9 @@
       svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.05)' }, ax);
       const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = v.toFixed(1);
     });
-    const xl = svgEl('text', { x: W - m.r, y: H - 10, 'text-anchor': 'end' }, ax); xl.textContent = 'CO₂ PER PERSON PER YEAR, CONSUMPTION-BASED (TONNES, LOG SCALE) →';
-    const yl = svgEl('text', { x: 16, y: (m.t + H - m.b) / 2, 'text-anchor': 'middle', transform: `rotate(-90 16 ${(m.t + H - m.b) / 2})` }, ax); yl.textContent = 'SOCIAL ATTAINMENT (1.0 = ALL FOUR NEEDS MET) →';
+    const xl = svgEl('text', { x: W - m.r, y: H - 10, 'text-anchor': 'end' }, ax); xl.textContent = MOB ? 'CO₂ PER PERSON (T, LOG) →' : 'CO₂ PER PERSON PER YEAR, CONSUMPTION-BASED (TONNES, LOG SCALE) →';
+    const yl = MOB ? svgEl('text', { x: 4, y: 18 }, ax) : svgEl('text', { x: 16, y: (m.t + H - m.b) / 2, 'text-anchor': 'middle', transform: `rotate(-90 16 ${(m.t + H - m.b) / 2})` }, ax);
+    yl.textContent = MOB ? '↑ SOCIAL ATTAINMENT (1.0 = ALL MET)' : 'SOCIAL ATTAINMENT (1.0 = ALL FOUR NEEDS MET) →';
     // safe and just corner
     svgEl('rect', { x: m.l, y: y(1.02), width: x(B) - m.l, height: y(0.985) - y(1.02), fill: 'rgba(95,209,176,.12)', stroke: '#5fd1b0', 'stroke-dasharray': '4 4' }, svg);
     const sjt = svgEl('text', { x: m.l + 8, y: y(1.02) - 9, fill: '#5fd1b0', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500, 'letter-spacing': '.08em' }, svg);
@@ -68,7 +69,7 @@
     svgEl('line', { x1: x(B), x2: x(B), y1: m.t - 14, y2: H - m.b, stroke: '#ffb454', 'stroke-width': 1.5, 'stroke-dasharray': '6 5' }, svg);
     const bt = svgEl('text', { x: x(B) + 8, y: H - m.b - 10, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500, 'letter-spacing': '.06em' }, svg); bt.textContent = 'FAIR SHARE 1.61 T';
     svgEl('line', { x1: m.l, x2: W - m.r, y1: y(1), y2: y(1), stroke: 'rgba(255,255,255,.35)', 'stroke-dasharray': '2 4' }, svg);
-    const big = svgEl('text', { x: W - m.r - 4, y: H - m.b - 18, 'text-anchor': 'end', fill: 'rgba(255,255,255,.08)', 'font-family': 'Barlow Condensed', 'font-weight': 700, 'font-size': 130 }, svg);
+    const big = svgEl('text', { class: 'big', x: W - m.r - 4, y: H - m.b - 18, 'text-anchor': 'end', fill: 'rgba(255,255,255,.08)', 'font-family': 'Barlow Condensed', 'font-weight': 700, 'font-size': MOB ? 96 : 130 }, svg);
     const trails = svgEl('g', {}, svg);
     const g = svgEl('g', {}, svg);
     const labels = svgEl('g', {}, svg);
@@ -108,7 +109,7 @@
         if (!vis) { c.setAttribute('r', 0); continue; }
         const q = quad(k, i);
         c.setAttribute('cx', x(e)); c.setAttribute('cy', y(Math.min(1, a)));
-        c.setAttribute('r', Math.max(3, Math.sqrt(k.pop[i] || 1) * 0.9));
+        c.setAttribute('r', Math.max(MOB ? 4 : 3, Math.sqrt(k.pop[i] || 1) * (MOB ? 0.68 : 0.9)));
         c.setAttribute('fill', q == null ? '#777' : QC[q]);
         c.setAttribute('opacity', S.hl.length && !S.hl.includes(iso) ? .5 : 1);
         c.setAttribute('stroke', S.hl.includes(iso) ? '#fff' : '#000');
@@ -124,9 +125,11 @@
           const [px, py] = pts[pts.length - 1];
           // nudge labels so they never sit on top of each other
           let ly = py - 10;
-          for (let t = 0; t < 8 && placed.some(p => Math.abs(p[0] - px) < 90 && Math.abs(p[1] - ly) < 14); t++) ly -= 14;
+          const lh = MOB ? 22 : 14;
+          for (let t = 0; t < 8 && placed.some(p => Math.abs(p[0] - px) < (MOB ? 130 : 90) && Math.abs(p[1] - ly) < lh); t++) ly -= lh;
           placed.push([px, ly]);
-          const t = svgEl('text', { x: px + 8, y: ly, fill: '#fff', 'font-family': 'Barlow', 'font-weight': 600, 'font-size': 12.5, 'letter-spacing': '.03em', 'paint-order': 'stroke', stroke: '#000', 'stroke-width': 3 }, labels);
+          const nearEdge = px > W - (MOB ? 150 : 120);
+          const t = svgEl('text', { x: nearEdge ? px - 8 : px + 8, y: ly, 'text-anchor': nearEdge ? 'end' : 'start', fill: '#fff', 'font-family': 'Barlow', 'font-weight': 600, 'font-size': 12.5, 'letter-spacing': '.03em', 'paint-order': 'stroke', stroke: '#000', 'stroke-width': 3 }, labels);
           t.textContent = k.n;
         }
       }
@@ -190,7 +193,7 @@
       'Its position shows the <strong>CO₂ per person</strong> it emitted in that year (log scale). Point at a dot for details.',
       'The green zone left of the orange line is the fair share. <strong>It is empty.</strong>'
     ]);
-    const W = 1100, H = 380, m = { l: 30, r: 30, t: 34, b: 40 };
+    const W = MOB ? 600 : 1100, H = MOB ? 460 : 380, m = MOB ? { l: 18, r: 18, t: 40, b: 44 } : { l: 30, r: 30, t: 34, b: 40 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const lx0 = Math.log(0.5), lx1 = Math.log(50);
     const x = v => m.l + (Math.log(v) - lx0) / (lx1 - lx0) * (W - m.l - m.r);
@@ -198,9 +201,9 @@
     [0.5, 1, 2, 5, 10, 20, 50].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 12, 'text-anchor': 'middle' }, ax); t.textContent = v + ' t'; svgEl('line', { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b + 6, stroke: 'rgba(255,255,255,.05)' }, ax); });
     svgEl('rect', { x: m.l, y: m.t, width: x(B) - m.l, height: H - m.t - m.b, fill: 'rgba(95,209,176,.07)' }, svg);
     svgEl('line', { x1: x(B), x2: x(B), y1: m.t - 14, y2: H - m.b + 6, stroke: '#ffb454', 'stroke-width': 2, 'stroke-dasharray': '6 5' }, svg);
-    const t1 = svgEl('text', { x: x(B) - 10, y: m.t - 4, 'text-anchor': 'end', fill: '#5fd1b0', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500 }, svg); t1.textContent = 'WITHIN FAIR SHARE: 0 COUNTRIES';
-    const t2 = svgEl('text', { x: x(B) + 10, y: m.t - 4, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500 }, svg); t2.textContent = '1.61 T →  ABOVE: 36 COUNTRIES';
-    const cy = (m.t + H - m.b) / 2 + 4, r = 9;
+    const t1 = svgEl('text', { x: x(B) - 10, y: m.t - 4, 'text-anchor': 'end', fill: '#5fd1b0', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500 }, svg); t1.textContent = MOB ? '0 WITHIN' : 'WITHIN FAIR SHARE: 0 COUNTRIES';
+    const t2 = svgEl('text', { x: x(B) + 10, y: m.t - 4, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500 }, svg); t2.textContent = MOB ? '1.61 T · 36 ABOVE →' : '1.61 T →  ABOVE: 36 COUNTRIES';
+    const cy = (m.t + H - m.b) / 2 + 4, r = MOB ? 10 : 9;
     const pts = [...X.crossers].sort((a, b) => a.co2 - b.co2).map(d => ({ ...d, x: x(d.co2) }));
     const placed = [];
     for (const p of pts) {
@@ -265,14 +268,15 @@
       'The <strong>dashed lines</strong> are the fair shares. The vertical gap between line and dashed line is how far there is still to go.'
     ]);
     const RO = Explain.readout(viz), TK = Explain.takeaway(viz);
-    const W = 1100, H = 440, m = { l: 50, r: 24, t: 16, b: 32 };
+    const W = MOB ? 600 : 1100, H = MOB ? 500 : 440, m = MOB ? { l: 62, r: 10, t: 16, b: 36 } : { l: 50, r: 24, t: 16, b: 32 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const lo = Math.log(0.5), hi = Math.log(300);
-    const x = v => m.l + (v - 1991) / (2022 - 1991) * (W - m.l - m.r - 150);
+    const gapW = MOB ? 96 : 150;
+    const x = v => m.l + (v - 1991) / (2022 - 1991) * (W - m.l - m.r - gapW);
     const y = v => m.t + (1 - (Math.log(Math.min(300, Math.max(v, 0.5))) - lo) / (hi - lo)) * (H - m.t - m.b);
     const ax = svgEl('g', { class: 'axis' }, svg);
     [0.5, 1, 2, 5, 10, 20, 50, 100, 300].forEach(v => { svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = v + ' t'; });
-    [1991, 1995, 2000, 2005, 2010, 2015, 2022].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v; });
+    (MOB ? [1991, 2005, 2022] : [1991, 1995, 2000, 2005, 2010, 2015, 2022]).forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v; });
     [[B, 'FAIR SHARE 2 °C · 1.61 T', '#ffb454'], [B15, 'FAIR SHARE 1.5 °C · 0.79 T', '#8a8f99']].forEach(([v, l, c]) => {
       svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: c, 'stroke-dasharray': '5 5' }, svg);
       const t = svgEl('text', { x: m.l + 8, y: y(v) - 7, fill: c, 'font-size': 11, 'font-family': 'IBM Plex Mono', 'font-weight': 500 }, svg); t.textContent = l;
@@ -297,13 +301,13 @@
       Explain.annotate(layer, { x: x(a[0]), y: y(a[1]), tx: x(a[0]) + 16, ty: y(a[1]) - 26, anchor: 'start', text: [`1991: ${tv(a[1])} T`, `95% CI ${tv(a[2])}–${tv(a[3])} t`], color: col, delay: 900 });
       Explain.annotate(layer, { x: x(b[0]), y: y(b[1]), tx: x(b[0]) + 16, ty: y(b[1]) - 6, anchor: 'start', text: [`2022: ${tv(b[1])} T`, `95% CI ${tv(b[2])}–${tv(b[3])} t`], color: col, delay: 1300 });
       // the remaining gap at 2022
-      const gx = x(2022) + 110, ratio = b[1] / B;
-      const gap = svgEl('g', { class: 'annot' }, layer);
+      const gx = x(2022) + (MOB ? 34 : 110), ratio = b[1] / B;
+      const gap = svgEl('g', { class: 'annot keep' }, layer);
       svgEl('line', { x1: gx, x2: gx, y1: y(b[1]), y2: y(B), stroke: '#ffb454', 'stroke-width': 1.5 }, gap);
       svgEl('line', { x1: gx - 5, x2: gx + 5, y1: y(b[1]), y2: y(b[1]), stroke: '#ffb454' }, gap);
       svgEl('line', { x1: gx - 5, x2: gx + 5, y1: y(B), y2: y(B), stroke: '#ffb454' }, gap);
       const gt = svgEl('text', { x: gx + 10, y: (y(b[1]) + y(B)) / 2, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 12, 'font-weight': 500 }, gap); gt.textContent = `${ratio.toFixed(1)}×`;
-      const gt2 = svgEl('text', { x: gx + 10, y: (y(b[1]) + y(B)) / 2 + 15, fill: '#a5a9b4', 'font-family': 'IBM Plex Mono', 'font-size': 10.5 }, gap); gt2.textContent = 'THE GAP';
+      const gt2 = svgEl('text', { x: gx + 10, y: (y(b[1]) + y(B)) / 2 + (MOB ? 24 : 15), fill: '#a5a9b4', 'font-family': 'IBM Plex Mono', 'font-size': 10.5 }, gap); gt2.textContent = MOB ? 'GAP' : 'THE GAP';
       setTimeout(() => gap.classList.add('on'), prefersReducedMotion ? 0 : 1700);
       P.pts.forEach(p => {
         const h = svgEl('rect', { x: x(p[0]) - 12, y: m.t, width: 24, height: H - m.t - m.b, fill: 'transparent' }, layer);
