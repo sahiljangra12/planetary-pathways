@@ -20,6 +20,8 @@ sample's own distribution.
 
 **[Open the study site →](https://sahiljangra12.github.io/planetary-pathways/)** An interactive essay on the results: an animated social–climate space for 114 countries (1991–2022), the 36 foundation crossings, a world map by year, the pooled carbon requirement with bootstrap bands, decoupling against the pace required, and country-by-country profiles. The full dashboard is at [`explorer.html`](https://sahiljangra12.github.io/planetary-pathways/explorer.html). Source in `docs/`; its data come from `docs/climate-data.js` and `docs/data/climate-extra.json`, built from `results/`.
 
+**Latest data (provisional).** A weekly GitHub Actions job ([`live-data.yml`](.github/workflows/live-data.yml)) runs [`tools/fetch_live.py`](tools/fetch_live.py), which downloads the newest World Bank WDI indicators and Global Carbon Budget emissions (via Our World in Data) and writes `docs/data/live.json`. For years after 2022 it applies the paper's rule to raw values (all four thresholds observed and met; overshoot above 1.61 t), with no gap filling. The site shows these as outlined, labelled points, with paired 2022→latest comparisons and their 95% intervals. The live layer never changes the paper's estimates, which stay fixed to the data vintage in `data/raw`.
+
 The compiled paper is [`paper/main.pdf`](paper/main.pdf). Headline results:
 
 - None of the 114 countries with consumption-based emissions met all four social thresholds while
@@ -74,6 +76,7 @@ src/ppath/           Analysis package
 tests/               pytest suite
 tools/check_paper.py Static checks on the paper source
 tools/independent_check.py   Independent re-derivation of the headline numbers
+tools/fetch_live.py         Weekly provisional update of the latest data (GitHub Actions)
 tools/wdi_spotcheck.py       Comparison of the WDI extract with the live World Bank API
 verification/       World Bank API values used by wdi_spotcheck.py
 results/             CSV/JSON outputs and LaTeX tables (generated)

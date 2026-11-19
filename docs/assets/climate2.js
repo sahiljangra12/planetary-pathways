@@ -2,7 +2,18 @@
 (async function () {
   const D = window.CLIMATE;
   if (!D) return;
-  const X = await fetch('data/climate-extra.json?v=20261119').then(r => r.json());
+  const [X, LIVE] = await Promise.all([
+    fetch('data/climate-extra.json?v=20261119b').then(r => r.json()),
+    // live layer: newest copy on the main branch (refreshed weekly by GitHub Actions), else the deployed copy
+    fetch('https://raw.githubusercontent.com/sahiljangra12/planetary-pathways/main/docs/data/live.json', { cache: 'no-store' })
+      .then(r => (r.ok ? r.json() : Promise.reject())).catch(() => fetch('data/live.json').then(r => (r.ok ? r.json() : null)).catch(() => null))
+  ]);
+  const LAST = 2022;
+  const LIVE_YEARS = LIVE ? [...new Set(Object.values(LIVE.countries).flatMap(c => Object.keys(c.years).map(Number)))].filter(y => y > LAST).sort() : [];
+  const YMAX = Math.max(LAST, ...LIVE_YEARS);
+  const QIDX = { 'Shortfall, within boundary': 0, 'Shortfall and overshoot': 1, 'Foundation met, overshoot': 2, 'Safe and just': 3 };
+  const liveRow = (iso, y) => (LIVE && LIVE.countries[iso] ? LIVE.countries[iso].years[y] : null);
+  const liveVal = (r, key) => (r == null ? null : key === 'em' ? (r.un == null ? null : 100 - r.un) : r[key]);
   const Y0 = 1990, B = 1.61, B15 = 0.79;
   const QN = ['Shortfall, within boundary', 'Shortfall and overshoot', 'Foundation met, overshoot', 'Safe and just'];
   const QC = ['#f2c14e', '#ef6f6c', '#5aa9ff', '#5fd1b0'];
@@ -259,9 +270,10 @@
       ['cons', 'CO₂, consumption', 't per person', B, false, 0, null],
       ['prod', 'CO₂, production', 't per person', B, false, 0, null]
     ];
-    function spark(host, key, label, unit, thr, higher, lo, hi, c) {
+    function spark(host, key, label, unit, thr, higher, lo, hi, c, iso) {
       const W = 300, H = 140, m = { l: 34, r: 8, t: 26, b: 20 };
-      const vals = c[key], v = vals.filter(z => z != null);
+      const vals = c[key], lv = LIVE_YEARS.map(y => [y - Y0, liveVal(liveRow(iso, y), key)]).filter(p => p[1] != null);
+      const v = [...vals.filter(z => z != null), ...lv.map(p => p[1])];
       const box = document.createElement('div'); box.className = 'pf-card';
       const last = [...vals].reverse().find(z => z != null);
       box.innerHTML = `<div class="pf-t"><span>${label}</span><b>${last == null ? 'n/a' : fmt(last, key === 'cons' || key === 'prod' ? 2 : 1)}<small> ${unit}</small></b></div>`;
@@ -269,10 +281,10 @@
       if (!v.length) { box.insertAdjacentHTML('beforeend', '<p class="muted small">No data</p>'); return; }
       const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, box);
       const ymin = lo ?? 0, ymax = hi ?? Math.max(thr * 1.4, ...v) * 1.08;
-      const x = i => m.l + (i - 1) / 31 * (W - m.l - m.r), y = z => m.t + (1 - (z - ymin) / (ymax - ymin)) * (H - m.t - m.b);
+      const x = i => m.l + (i - 1) / (YMAX - Y0 - 1) * (W - m.l - m.r), y = z => m.t + (1 - (z - ymin) / (ymax - ymin)) * (H - m.t - m.b);
       const ax = svgEl('g', { class: 'axis' }, svg);
       [ymin, ymax].forEach(z => { const t = svgEl('text', { x: m.l - 6, y: y(z) + 4, 'text-anchor': 'end' }, ax); t.textContent = Math.round(z); });
-      [[1, '1991'], [32, '2022']].forEach(([i, l]) => { const t = svgEl('text', { x: x(i), y: H - 4, 'text-anchor': i === 1 ? 'start' : 'end' }, ax); t.textContent = l; });
+      [[1, '1991'], [YMAX - Y0, String(YMAX)]].forEach(([i, l]) => { const t = svgEl('text', { x: x(i), y: H - 4, 'text-anchor': i === 1 ? 'start' : 'end' }, ax); t.textContent = l; });
       svgEl('line', { x1: m.l, x2: W - m.r, y1: y(thr), y2: y(thr), stroke: '#ffb454', 'stroke-dasharray': '4 4' }, svg);
       const segs = []; let cur = [];
       for (let i = 1; i <= 32; i++) { if (vals[i] == null) { if (cur.length) segs.push(cur); cur = []; } else cur.push([x(i), y(vals[i])]); }
@@ -285,6 +297,12 @@
         d.addEventListener('pointerenter', e => showTip(`<b>${c.n} · ${1990 + i}</b>${label}: ${fmt(vals[i])} ${unit}`, e.clientX, e.clientY));
         d.addEventListener('pointerleave', hideTip);
       }
+      lv.forEach(([i, z]) => {
+        const ok = higher ? z >= thr : z <= thr;
+        const d = svgEl('circle', { cx: x(i), cy: y(Math.min(ymax, Math.max(ymin, z))), r: 3, fill: '#000', stroke: ok ? '#5fd1b0' : '#ef6f6c', 'stroke-width': 1.5 }, svg);
+        d.addEventListener('pointerenter', e => showTip(`<b>${c.n} · ${1990 + i} · provisional</b>${label}: ${fmt(z)} ${unit}<br>Latest public data, not in the paper`, e.clientX, e.clientY));
+        d.addEventListener('pointerleave', hideTip);
+      });
     }
     function show(iso) {
       const c = D.C[iso];
@@ -300,10 +318,56 @@
         s.style.transitionDelay = (j * 0.015) + 's';
         strip.appendChild(s);
       }
-      strip.insertAdjacentHTML('beforeend', '<em>1991</em><em>2022</em>');
+      LIVE_YEARS.forEach(y => {
+        const pr = liveRow(iso, y)?.provisional, qq = pr && pr.configuration ? QIDX[pr.configuration] : null, s = document.createElement('span');
+        s.className = 'prov'; s.style.background = 'transparent'; s.style.boxShadow = `inset 0 0 0 1.5px ${qq == null ? '#3a3f47' : QC[qq]}`;
+        s.title = `${y} (provisional): ${qq == null ? 'not classified, data incomplete' : QN[qq]}`;
+        strip.appendChild(s);
+      });
+      strip.style.gridTemplateColumns = `repeat(${YMAX - Y0},1fr)`;
+      strip.insertAdjacentHTML('beforeend', `<em>1991</em><em>${YMAX}${YMAX > LAST ? ' · outlined = provisional' : ''}</em>`);
       const grid = document.getElementById('pf-grid'); grid.innerHTML = '';
-      PANELS.forEach(([k, l, u, t, h, lo, hi]) => spark(grid, k, l, u, t, h, lo, hi, c));
+      PANELS.forEach(([k, l, u, t, h, lo, hi]) => spark(grid, k, l, u, t, h, lo, hi, c, iso));
     }
     show('IND');
+  })();
+
+  // =============================================================== latest data (provisional)
+  (function live() {
+    const kv = document.getElementById('lv-kv'); if (!kv) return;
+    if (!LIVE) { kv.innerHTML = '<dt>Status</dt><dd>The live feed could not be reached just now. The paper\'s results do not depend on it.</dd>'; return; }
+    const d = new Date(LIVE.fetched.replace('Z', ':00Z'));
+    document.getElementById('lv-when').textContent = isNaN(d) ? 'weekly' : d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    const S = LIVE.sources, C = Object.entries(LIVE.countries);
+    // newest year with data for at least half of the 155 countries, per series
+    const newest = k => { const cnt = {}; C.forEach(([, c]) => Object.entries(c.years).forEach(([y, r]) => { if (r[k] != null) cnt[y] = (cnt[y] || 0) + 1; })); const ys = Object.keys(cnt).filter(y => cnt[y] >= 78).map(Number); return ys.length ? `${Math.max(...ys)} (${cnt[Math.max(...ys)]} countries)` : 'n/a'; };
+    kv.innerHTML = `<dt>Last fetched</dt><dd>${LIVE.fetched.replace('T', ' ')} (UTC)</dd>` +
+      ['le', 'cm', 'el', 'un', 'cons', 'prod'].map(k => `<dt>${S[k].label}</dt><dd>newest broad year ${newest(k)} · ${S[k].source}${S[k].last_updated ? ', updated ' + S[k].last_updated : ''}</dd>`).join('') +
+      `<dt>Rule</dt><dd>${LIVE.rule}</dd>`;
+    // paired change in consumption CO2 per person, 2022 (paper data) to the newest live year, same countries
+    const host = document.getElementById('lv-tests');
+    const tq = p => { const t = [12.71, 4.30, 3.18, 2.78, 2.57, 2.45, 2.36, 2.31, 2.26, 2.23]; return p <= 10 ? t[p - 1] : 1.96 + 2.4 / p; };
+    const paired = (key, label, unit) => {
+      let best = null;
+      for (const y of LIVE_YEARS) {
+        const pairs = Object.keys(D.C).map(iso => [D.C[iso][key][32], liveVal(liveRow(iso, y), key)]).filter(p => p[0] != null && p[1] != null);
+        if (pairs.length >= 30) best = { y, pairs };
+      }
+      if (!best) return '';
+      const dif = best.pairs.map(p => p[1] - p[0]), n = dif.length, mu = dif.reduce((a, b) => a + b, 0) / n;
+      const sd = Math.sqrt(dif.reduce((a, b) => a + (b - mu) ** 2, 0) / (n - 1)), se = sd / Math.sqrt(n), q = tq(n - 1);
+      const lo = mu - q * se, hi = mu + q * se, sig = lo > 0 || hi < 0;
+      return `<div class="lv-test"><span class="k">${label}, 2022 → ${best.y}</span><b>${mu >= 0 ? '+' : ''}${fmt(mu, 2)} <small>${unit}</small></b><span class="ci">95% CI ${fmt(lo, 2)} to ${fmt(hi, 2)} · paired t, n = ${n} countries</span><span class="verdict ${sig ? 'yes' : 'no'}">${sig ? 'Change detected' : 'Within uncertainty'}</span></div>`;
+    };
+    // counts of provisional configurations for each year after the paper
+    const rows = LIVE_YEARS.map(y => {
+      const cnt = [0, 0, 0, 0]; let un = 0;
+      C.forEach(([, c]) => { const r = c.years[y]; if (!r) return; const q = r.provisional && r.provisional.configuration; if (q) cnt[QIDX[q]]++; else un++; });
+      const n = cnt.reduce((a, b) => a + b, 0);
+      return n ? `<tr><td>${y}</td><td class="n">${n}</td>${[0, 1, 2, 3].map(k => `<td class="n" style="color:${QC[k]}">${cnt[k]}</td>`).join('')}<td class="n muted">${un}</td></tr>` : '';
+    }).join('');
+    host.innerHTML = paired('cons', 'Consumption CO₂ per person', 't') + paired('le', 'Life expectancy', 'years') +
+      (rows ? `<div class="scroll-x" style="grid-column:1/-1"><table class="table"><thead><tr><th>Year</th><th class="n">Classified</th>${QN.map((q, k) => `<th class="n" style="color:${QC[k]}">${q}</th>`).join('')}<th class="n">Incomplete data</th></tr></thead><tbody>${rows}</tbody></table></div>` : '');
+    if (!host.innerHTML) host.innerHTML = '<p class="muted small">No years beyond 2022 have enough data yet.</p>';
   })();
 })();
