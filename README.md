@@ -16,6 +16,8 @@ sample's own distribution.
 
 ## Paper
 
+**Interactive site:** https://sahiljangra12.github.io/planetary-pathways/ (explore the evidence country by country and year by year; source in `docs/`).
+
 The compiled paper is [`paper/main.pdf`](paper/main.pdf). Headline results:
 
 - None of the 114 countries with consumption-based emissions met all four social thresholds while
