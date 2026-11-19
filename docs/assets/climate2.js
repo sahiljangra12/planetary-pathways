@@ -3,13 +3,15 @@
   const D = window.CLIMATE;
   if (!D) return;
   const [X, LIVE] = await Promise.all([
-    fetch('data/climate-extra.json?v=20261119b').then(r => r.json()),
+    fetch('data/climate-extra.json?v=20261119d').then(r => r.json()),
     // live layer: newest copy on the main branch (refreshed weekly by GitHub Actions), else the deployed copy
     fetch('https://raw.githubusercontent.com/sahiljangra12/planetary-pathways/main/docs/data/live.json', { cache: 'no-store' })
       .then(r => (r.ok ? r.json() : Promise.reject())).catch(() => fetch('data/live.json').then(r => (r.ok ? r.json() : null)).catch(() => null))
   ]);
   const LAST = 2022;
-  const LIVE_YEARS = LIVE ? [...new Set(Object.values(LIVE.countries).flatMap(c => Object.keys(c.years).map(Number)))].filter(y => y > LAST).sort() : [];
+  // newer years shown only where at least 50 countries have a social indicator
+  const LIVE_YEARS = LIVE ? [...new Set(Object.values(LIVE.countries).flatMap(c => Object.keys(c.years).map(Number)))]
+    .filter(y => y > LAST && Object.values(LIVE.countries).filter(c => c.years[y] && c.years[y].le != null).length >= 50).sort() : [];
   const YMAX = Math.max(LAST, ...LIVE_YEARS);
   const QIDX = { 'Shortfall, within boundary': 0, 'Shortfall and overshoot': 1, 'Foundation met, overshoot': 2, 'Safe and just': 3 };
   const liveRow = (iso, y) => (LIVE && LIVE.countries[iso] ? LIVE.countries[iso].years[y] : null);
@@ -18,6 +20,7 @@
   const QN = ['Shortfall, within boundary', 'Shortfall and overshoot', 'Foundation met, overshoot', 'Safe and just'];
   const QC = ['#f2c14e', '#ef6f6c', '#5aa9ff', '#5fd1b0'];
   const fmt = (v, n = 1) => (v == null ? 'n/a' : (+v).toFixed(n));
+  const xr = v => (v / 1.61).toFixed(v / 1.61 < 2 ? 2 : 1); // multiple of the fair share
   const quad = (c, i, acc = 'cons') => {
     const m = c.met[i], e = c[acc][i];
     if (m == null || e == null) return null;
@@ -35,7 +38,14 @@
   (function space() {
     const svg = document.getElementById('space-svg');
     if (!svg) return;
-    const W = 1100, H = 560, m = { l: 56, r: 24, t: 24, b: 46 };
+    const viz = document.getElementById('spaceviz');
+    Explain.guide(viz, [
+      'Each bubble is a <strong>country</strong>; its size is its population and its colour is its situation that year.',
+      '<strong>Higher</strong> = closer to meeting all four basic needs. The dotted line at 1.0 means all four are met.',
+      '<strong>Further right</strong> = more CO₂ per person. Left of the orange line is within the fair share of 1.61 t.'
+    ]);
+    const RO = Explain.readout(viz), TK = Explain.takeaway(viz);
+    const W = 1100, H = 580, m = { l: 62, r: 24, t: 40, b: 50 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const lx0 = Math.log(0.04), lx1 = Math.log(60);
     const x = v => m.l + (Math.log(Math.max(0.04, v)) - lx0) / (lx1 - lx0) * (W - m.l - m.r);
@@ -49,20 +59,20 @@
       svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.05)' }, ax);
       const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = v.toFixed(1);
     });
-    const xl = svgEl('text', { x: W - m.r, y: H - 8, 'text-anchor': 'end' }, ax); xl.textContent = 'CO₂ PER PERSON, CONSUMPTION-BASED (T, LOG) →';
-    const yl = svgEl('text', { x: m.l, y: m.t - 10 }, ax); yl.textContent = '↑ SOCIAL ATTAINMENT';
+    const xl = svgEl('text', { x: W - m.r, y: H - 10, 'text-anchor': 'end' }, ax); xl.textContent = 'CO₂ PER PERSON PER YEAR, CONSUMPTION-BASED (TONNES, LOG SCALE) →';
+    const yl = svgEl('text', { x: 16, y: (m.t + H - m.b) / 2, 'text-anchor': 'middle', transform: `rotate(-90 16 ${(m.t + H - m.b) / 2})` }, ax); yl.textContent = 'SOCIAL ATTAINMENT (1.0 = ALL FOUR NEEDS MET) →';
     // safe and just corner
-    const sj = svgEl('rect', { x: m.l, y: y(1.02), width: x(B) - m.l, height: y(0.985) - y(1.02), fill: 'rgba(95,209,176,.10)', stroke: '#5fd1b0', 'stroke-dasharray': '4 4' }, svg);
-    const sjt = svgEl('text', { x: m.l + 10, y: y(0.985) + 18, fill: '#5fd1b0', 'font-family': 'Barlow', 'font-size': 11, 'letter-spacing': '.18em', 'font-weight': 600 }, svg);
+    svgEl('rect', { x: m.l, y: y(1.02), width: x(B) - m.l, height: y(0.985) - y(1.02), fill: 'rgba(95,209,176,.12)', stroke: '#5fd1b0', 'stroke-dasharray': '4 4' }, svg);
+    const sjt = svgEl('text', { x: m.l + 8, y: y(1.02) - 9, fill: '#5fd1b0', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500, 'letter-spacing': '.08em' }, svg);
     sjt.textContent = 'SAFE AND JUST SPACE';
-    svgEl('line', { x1: x(B), x2: x(B), y1: m.t, y2: H - m.b, stroke: '#ffb454', 'stroke-width': 1.5, 'stroke-dasharray': '6 5' }, svg);
-    const bt = svgEl('text', { x: x(B) + 8, y: H - m.b - 10, fill: '#ffb454', 'font-family': 'Barlow', 'font-size': 11, 'letter-spacing': '.14em', 'font-weight': 600 }, svg); bt.textContent = '1.61 T BOUNDARY';
+    svgEl('line', { x1: x(B), x2: x(B), y1: m.t - 14, y2: H - m.b, stroke: '#ffb454', 'stroke-width': 1.5, 'stroke-dasharray': '6 5' }, svg);
+    const bt = svgEl('text', { x: x(B) + 8, y: H - m.b - 10, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500, 'letter-spacing': '.06em' }, svg); bt.textContent = 'FAIR SHARE 1.61 T';
     svgEl('line', { x1: m.l, x2: W - m.r, y1: y(1), y2: y(1), stroke: 'rgba(255,255,255,.35)', 'stroke-dasharray': '2 4' }, svg);
-    const ft = svgEl('text', { x: W - m.r, y: y(1) + 18, 'text-anchor': 'end', fill: 'rgba(255,255,255,.6)', 'font-family': 'Barlow', 'font-size': 11, 'letter-spacing': '.14em', 'font-weight': 600 }, svg); ft.textContent = 'ALL FOUR THRESHOLDS MET';
-    const big = svgEl('text', { x: W - m.r - 4, y: H - m.b - 18, 'text-anchor': 'end', fill: 'rgba(255,255,255,.09)', 'font-family': 'Barlow Condensed', 'font-weight': 700, 'font-size': 120 }, svg);
+    const big = svgEl('text', { x: W - m.r - 4, y: H - m.b - 18, 'text-anchor': 'end', fill: 'rgba(255,255,255,.08)', 'font-family': 'Barlow Condensed', 'font-weight': 700, 'font-size': 130 }, svg);
     const trails = svgEl('g', {}, svg);
     const g = svgEl('g', {}, svg);
     const labels = svgEl('g', {}, svg);
+    const ann = svgEl('g', {}, svg);
     const S = { year: 1991, region: 'All', hl: ['IND', 'CHN', 'USA', 'BRA', 'CRI', 'NGA'], timer: null };
     const nodes = {};
     const order = [...isos].sort((a, b) => (D.C[b].pop[32] || 0) - (D.C[a].pop[32] || 0));
@@ -72,12 +82,22 @@
       const show = e => {
         const k = D.C[iso], i = S.year - Y0, q = quad(k, i);
         const r = c.getBoundingClientRect();
-        showTip(`<b>${k.n}</b>${S.year} · ${q == null ? 'not classified' : QN[q]}<br>CO₂ ${fmt(k.cons[i])} t · attainment ${fmt(k.att[i], 2)}<br>Thresholds met: ${k.met[i] ?? 'n/a'} of 4 · pop. ${fmt(k.pop[i], 0)} m`, e.clientX || r.x, e.clientY || r.y);
+        showTip(`<b>${k.n}</b>${S.year} · ${q == null ? 'not classified' : QN[q]}<br>CO₂ ${fmt(k.cons[i])} t per person (${xr(k.cons[i])}× fair share)<br>Basic needs met: ${k.met[i] ?? 'n/a'} of 4 · attainment ${fmt(k.att[i], 2)}<br>Population ${fmt(k.pop[i], 0)} million · click to trace its path`, e.clientX || r.x, e.clientY || r.y);
       };
       c.addEventListener('pointerenter', show); c.addEventListener('focus', show);
       c.addEventListener('pointerleave', hideTip); c.addEventListener('blur', hideTip);
       c.addEventListener('click', () => toggle(iso));
       nodes[iso] = c;
+    }
+    function stats(i) {
+      let n = 0, met = 0, within = 0, sj = 0;
+      for (const iso of isos) {
+        const k = D.C[iso];
+        if (S.region !== 'All' && k.c !== S.region) continue;
+        const q = quad(k, i); if (q == null) continue;
+        n++; if (q >= 2) met++; if (q === 0 || q === 3) within++; if (q === 3) sj++;
+      }
+      return { n, met, within, sj };
     }
     function draw() {
       const i = S.year - Y0;
@@ -94,6 +114,7 @@
         c.setAttribute('stroke', S.hl.includes(iso) ? '#fff' : '#000');
       }
       trails.innerHTML = ''; labels.innerHTML = '';
+      const placed = [];
       for (const iso of S.hl) {
         const k = D.C[iso]; if (!k) continue;
         const pts = [];
@@ -101,18 +122,30 @@
         if (pts.length > 1) svgEl('path', { d: 'M' + pts.map(p => p.map(v => v.toFixed(1)).join(',')).join('L'), fill: 'none', stroke: 'rgba(255,255,255,.55)', 'stroke-width': 1.3 }, trails);
         if (pts.length) {
           const [px, py] = pts[pts.length - 1];
-          const t = svgEl('text', { x: px + 10, y: py - 8, fill: '#fff', 'font-family': 'Barlow', 'font-weight': 600, 'font-size': 12, 'letter-spacing': '.04em' }, labels);
+          // nudge labels so they never sit on top of each other
+          let ly = py - 10;
+          for (let t = 0; t < 8 && placed.some(p => Math.abs(p[0] - px) < 90 && Math.abs(p[1] - ly) < 14); t++) ly -= 14;
+          placed.push([px, ly]);
+          const t = svgEl('text', { x: px + 8, y: ly, fill: '#fff', 'font-family': 'Barlow', 'font-weight': 600, 'font-size': 12.5, 'letter-spacing': '.03em', 'paint-order': 'stroke', stroke: '#000', 'stroke-width': 3 }, labels);
           t.textContent = k.n;
         }
       }
       document.getElementById('sp-out').textContent = S.year;
       document.getElementById('sp-year').value = S.year;
-      const n = isos.filter(iso => quad(D.C[iso], i) === 3).length;
-      sjt.textContent = n ? `SAFE AND JUST SPACE · ${n}` : 'SAFE AND JUST SPACE · EMPTY';
+      const st = stats(i);
+      sjt.textContent = st.sj ? `SAFE AND JUST SPACE · ${st.sj}` : 'SAFE AND JUST SPACE · EMPTY';
+      RO.set([
+        ['Year', S.year],
+        ['Countries shown', st.n, S.region === 'All' ? 'all regions' : (S.region === 'America' ? 'Americas' : S.region)],
+        ['All 4 needs met', st.met, `${Math.round(st.met / st.n * 100)}% of shown`],
+        ['Within fair share', st.within, `${Math.round(st.within / st.n * 100)}% of shown`],
+        ['Both (safe and just)', st.sj, st.sj ? '' : 'empty', st.sj ? 'up' : 'warn']
+      ]);
+      TK.set(`In <b>${S.year}</b>, ${st.met} of ${st.n} countries${S.region === 'All' ? '' : ' in ' + (S.region === 'America' ? 'the Americas' : S.region)} met all four basic needs and ${st.within} stayed within the fair share of 1.61 t. ${st.sj ? `${st.sj} managed both.` : '<b>None managed both</b>: every country that reached the top line did so to the right of the orange line.'}`);
       chips();
     }
     function chips() {
-      document.getElementById('sp-chips').innerHTML = S.hl.map(i => `<button class="chip" data-i="${i}" aria-label="Remove ${D.C[i].n}">${D.C[i].n} ×</button>`).join('') + (S.hl.length ? '<button class="chip ghost" data-clear>Clear</button>' : '');
+      document.getElementById('sp-chips').innerHTML = S.hl.map(i => `<button class="chip" data-i="${i}" aria-label="Remove ${D.C[i].n}">${D.C[i].n} ×</button>`).join('') + (S.hl.length ? '<button class="chip ghost" data-clear>Clear</button>' : '<span class="muted small">Click a bubble or type a name to trace a country’s path.</span>');
     }
     document.getElementById('sp-chips').addEventListener('click', e => {
       const b = e.target.closest('button'); if (!b) return;
@@ -134,30 +167,40 @@
     function start() {
       if (S.year >= 2022) S.year = 1991;
       play.textContent = '❚❚';
-      S.timer = setInterval(() => { if (S.year >= 2022) return stop(); S.year++; draw(); }, 560);
+      S.timer = setInterval(() => { if (S.year >= 2022) { stop(); return annotate(); } S.year++; draw(); }, 560);
+    }
+    let annotated = false;
+    function annotate() {
+      if (annotated) return; annotated = true;
+      Explain.annotate(ann, { x: x(0.4), y: y(1.0), tx: x(0.12), ty: y(0.9), r: 0.1, ring: false, anchor: 'start', text: ['NO COUNTRY HAS EVER BEEN HERE', 'needs met within the fair share'], color: '#5fd1b0' });
+      Explain.annotate(ann, { x: x(B), y: y(0.47), tx: x(B) + 12, ty: y(0.47), ring: false, anchor: 'start', text: ['FAIR SHARE: 1.61 T', 'equal share of a 2 °C budget'], color: '#ffb454', delay: 500 });
     }
     play.addEventListener('click', () => (S.timer ? stop() : start()));
-    // start everything at the centre, then fly in
     order.forEach(iso => { nodes[iso].setAttribute('cx', x(B)); nodes[iso].setAttribute('cy', y(0.65)); });
-    onReveal(document.getElementById('spaceviz'), () => { draw(); if (!prefersReducedMotion) setTimeout(start, 900); else { S.year = 2022; draw(); } });
+    onReveal(viz, () => { draw(); if (!prefersReducedMotion) setTimeout(start, 900); else { S.year = 2022; draw(); annotate(); } });
   })();
 
   // =============================================================== the crossing (beeswarm)
   (function crossing() {
     const svg = document.getElementById('cross');
     if (!svg) return;
-    const W = 680, H = 420, m = { l: 20, r: 20, t: 30, b: 40 };
+    const viz = document.getElementById('crossviz');
+    Explain.guide(viz, [
+      'Each dot is one of the <strong>36 countries</strong> that went from missing a basic need to meeting all four.',
+      'Its position shows the <strong>CO₂ per person</strong> it emitted in that year (log scale). Point at a dot for details.',
+      'The green zone left of the orange line is the fair share. <strong>It is empty.</strong>'
+    ]);
+    const W = 1100, H = 380, m = { l: 30, r: 30, t: 34, b: 40 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const lx0 = Math.log(0.5), lx1 = Math.log(50);
     const x = v => m.l + (Math.log(v) - lx0) / (lx1 - lx0) * (W - m.l - m.r);
     const ax = svgEl('g', { class: 'axis' }, svg);
     [0.5, 1, 2, 5, 10, 20, 50].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 12, 'text-anchor': 'middle' }, ax); t.textContent = v + ' t'; svgEl('line', { x1: x(v), x2: x(v), y1: m.t, y2: H - m.b + 6, stroke: 'rgba(255,255,255,.05)' }, ax); });
     svgEl('rect', { x: m.l, y: m.t, width: x(B) - m.l, height: H - m.t - m.b, fill: 'rgba(95,209,176,.07)' }, svg);
-    svgEl('line', { x1: x(B), x2: x(B), y1: m.t - 10, y2: H - m.b + 6, stroke: '#ffb454', 'stroke-width': 2, 'stroke-dasharray': '6 5' }, svg);
-    const t1 = svgEl('text', { x: x(B) - 8, y: m.t + 4, 'text-anchor': 'end', fill: '#5fd1b0', 'font-family': 'Barlow', 'font-size': 11, 'font-weight': 600, 'letter-spacing': '.14em' }, svg); t1.textContent = 'WITHIN BOUNDARY: 0';
-    const t2 = svgEl('text', { x: x(B) + 8, y: m.t + 4, fill: '#ffb454', 'font-family': 'Barlow', 'font-size': 11, 'font-weight': 600, 'letter-spacing': '.14em' }, svg); t2.textContent = '1.61 T';
-    // beeswarm placement around the centre line
-    const cy = (m.t + H - m.b) / 2 + 8, r = 9;
+    svgEl('line', { x1: x(B), x2: x(B), y1: m.t - 14, y2: H - m.b + 6, stroke: '#ffb454', 'stroke-width': 2, 'stroke-dasharray': '6 5' }, svg);
+    const t1 = svgEl('text', { x: x(B) - 10, y: m.t - 4, 'text-anchor': 'end', fill: '#5fd1b0', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500 }, svg); t1.textContent = 'WITHIN FAIR SHARE: 0 COUNTRIES';
+    const t2 = svgEl('text', { x: x(B) + 10, y: m.t - 4, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 11, 'font-weight': 500 }, svg); t2.textContent = '1.61 T →  ABOVE: 36 COUNTRIES';
+    const cy = (m.t + H - m.b) / 2 + 4, r = 9;
     const pts = [...X.crossers].sort((a, b) => a.co2 - b.co2).map(d => ({ ...d, x: x(d.co2) }));
     const placed = [];
     for (const p of pts) {
@@ -175,15 +218,10 @@
     const dots = pts.map((p, k) => {
       const c = svgEl('circle', { cx: p.x, cy: -20, r, fill: decCol(p.y), stroke: '#000', 'stroke-width': 1, tabindex: 0 }, g);
       c.style.transition = `cy .9s cubic-bezier(.3,1.4,.5,1) ${k * 0.035}s, fill .4s`;
-      const show = e => showTip(`<b>${p.n}</b>Crossed in ${p.y}<br>${fmt(p.co2)} t CO₂ per person · ${(p.co2 / B).toFixed(1)}× the boundary${p.sust ? '' : '<br>Not sustained for three years'}`, e.clientX || p.x, e.clientY || p.py);
+      const show = e => showTip(`<b>${p.n}</b>Met all four needs in ${p.y}<br>${fmt(p.co2)} t CO₂ per person · ${xr(p.co2)}× the fair share${p.sust ? '<br>Kept meeting them for at least three years' : '<br>Not sustained for three years'}`, e.clientX || p.x, e.clientY || p.py);
       c.addEventListener('pointerenter', show); c.addEventListener('focus', show);
       c.addEventListener('pointerleave', hideTip); c.addEventListener('blur', hideTip);
       return c;
-    });
-    ['CHN', 'ARE', 'ALB'].forEach(iso => {
-      const p = pts.find(q => q.i === iso); if (!p) return;
-      const t = svgEl('text', { x: p.x, y: p.py < cy ? p.py - 13 : p.py + 22, 'text-anchor': 'middle', fill: '#cfd3dc', 'font-family': 'Barlow', 'font-size': 11 }, g);
-      t.textContent = `${p.n} ${p.y}`; t.style.opacity = 0; t.style.transition = 'opacity .6s 1.6s'; t.classList.add('lab');
     });
     const leg = document.getElementById('cross-legend');
     function colour(mode) {
@@ -192,15 +230,27 @@
         ? '<span><i style="background:#8fd3ff;border-radius:50%"></i>Crossed in the 1990s</span><span><i style="background:#5aa9ff;border-radius:50%"></i>2000s</span><span><i style="background:#b48cff;border-radius:50%"></i>2010–2022</span>'
         : '<span><i style="background:#ef6f6c;border-radius:50%"></i>Met for at least three years</span><span><i style="background:#6f7480;border-radius:50%"></i>Not sustained</span>';
     }
-    document.querySelectorAll('#crossviz [data-c]').forEach(b => b.addEventListener('click', () => {
-      document.querySelectorAll('#crossviz [data-c]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); colour(b.dataset.c);
+    viz.querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => {
+      viz.querySelectorAll('[data-c]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); colour(b.dataset.c);
     }));
     colour('decade');
-    onReveal(document.getElementById('crossviz'), () => {
-      requestAnimationFrame(() => requestAnimationFrame(() => {
-        dots.forEach((c, k) => c.setAttribute('cy', pts[k].py));
-        g.querySelectorAll('.lab').forEach(t => { t.style.opacity = 1; });
-      }));
+    const co = pts.map(p => p.co2).sort((a, b) => a - b), med = (co[17] + co[18]) / 2, lo = pts[0];
+    Explain.readout(viz).set([
+      ['Countries crossing', pts.length, '1991–2022'],
+      ['Within fair share', 0, 'when they crossed', 'warn'],
+      ['Median CO₂ at crossing', fmt(med) + ' t', `${(med / B).toFixed(1)}× the fair share`],
+      ['Lowest-carbon crossing', fmt(lo.co2) + ' t', `${lo.n}, ${lo.y}`]
+    ]);
+    Explain.takeaway(viz).set(`Even the lowest-carbon crossing, <b>${lo.n} in ${lo.y}</b>, emitted ${fmt(lo.co2)} t per person, ${xr(lo.co2)} times the fair share. The typical country crossed at ${fmt(med)} t. On this evidence, no country has yet met all four basic needs on a fair-share carbon budget.`);
+    onReveal(viz, () => {
+      requestAnimationFrame(() => requestAnimationFrame(() => dots.forEach((c, k) => c.setAttribute('cy', pts[k].py))));
+      const marks = [[lo, 'LOWEST'], [pts.find(q => q.i === 'CHN'), 'CHINA'], [pts[pts.length - 1], 'HIGHEST']];
+      marks.forEach(([p, lab], k) => {
+        if (!p) return;
+        const up = p.py < cy;
+        const anc = p.x > W - 140 ? 'end' : p.x < 140 ? 'start' : 'middle';
+        Explain.annotate(svg, { x: p.x, y: p.py, r: r + 3, tx: anc === 'end' ? p.x + 12 : anc === 'start' ? p.x - 12 : p.x, ty: up ? m.t + 14 : H - m.b - 8, anchor: anc, elbow: anc !== 'middle', text: [`${lab === 'CHINA' ? p.n.toUpperCase() : lab + ': ' + p.n.toUpperCase()}`, `${p.y} · ${fmt(p.co2)} t`], color: '#fff', delay: 1700 + k * 300 });
+      });
     });
   })();
 
@@ -208,54 +258,86 @@
   (function req() {
     const svg = document.getElementById('req');
     if (!svg) return;
-    const W = 680, H = 420, m = { l: 44, r: 16, t: 14, b: 30 };
+    const viz = document.getElementById('reqviz');
+    Explain.guide(viz, [
+      'The <strong>solid line</strong> is the CO₂ per person at which half of all countries meet the chosen needs. Lower means development costs less carbon.',
+      'The <strong>shaded band</strong> is its 95% confidence interval; the faint dots are separate one-year estimates.',
+      'The <strong>dashed lines</strong> are the fair shares. The vertical gap between line and dashed line is how far there is still to go.'
+    ]);
+    const RO = Explain.readout(viz), TK = Explain.takeaway(viz);
+    const W = 1100, H = 440, m = { l: 50, r: 24, t: 16, b: 32 };
     svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     const lo = Math.log(0.5), hi = Math.log(300);
-    const x = v => m.l + (v - 1991) / (2022 - 1991) * (W - m.l - m.r);
+    const x = v => m.l + (v - 1991) / (2022 - 1991) * (W - m.l - m.r - 150);
     const y = v => m.t + (1 - (Math.log(Math.min(300, Math.max(v, 0.5))) - lo) / (hi - lo)) * (H - m.t - m.b);
     const ax = svgEl('g', { class: 'axis' }, svg);
-    [0.5, 1, 2, 5, 10, 20, 50, 100, 300].forEach(v => { svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = v; });
-    [1991, 2000, 2010, 2022].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v; });
-    [[B, '1.61 t · 2 °C boundary', '#ffb454'], [B15, '0.79 t · 1.5 °C', '#8a8f99']].forEach(([v, l, c]) => {
+    [0.5, 1, 2, 5, 10, 20, 50, 100, 300].forEach(v => { svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: 'rgba(255,255,255,.06)' }, ax); const t = svgEl('text', { x: m.l - 8, y: y(v) + 4, 'text-anchor': 'end' }, ax); t.textContent = v + ' t'; });
+    [1991, 1995, 2000, 2005, 2010, 2015, 2022].forEach(v => { const t = svgEl('text', { x: x(v), y: H - 8, 'text-anchor': 'middle' }, ax); t.textContent = v; });
+    [[B, 'FAIR SHARE 2 °C · 1.61 T', '#ffb454'], [B15, 'FAIR SHARE 1.5 °C · 0.79 T', '#8a8f99']].forEach(([v, l, c]) => {
       svgEl('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: c, 'stroke-dasharray': '5 5' }, svg);
-      const t = svgEl('text', { x: W - m.r, y: y(v) - 6, 'text-anchor': 'end', fill: c, 'font-size': 11, 'font-family': 'Barlow', 'letter-spacing': '.08em' }, svg); t.textContent = l.toUpperCase();
+      const t = svgEl('text', { x: m.l + 8, y: y(v) - 7, fill: c, 'font-size': 11, 'font-family': 'IBM Plex Mono', 'font-weight': 500 }, svg); t.textContent = l;
     });
     const layer = svgEl('g', {}, svg);
     const COL = { main: '#ffffff', health: '#5fd1b0', production: '#8fd3ff' };
+    const NAME = { main: 'all four needs', health: 'the two health needs', production: 'all four needs (production CO₂)' };
     const YEARLY = { main: 'main', health: 'health', production: 'prod' };
+    const leg = document.getElementById('req-legend');
     function draw(s) {
       layer.innerHTML = '';
       const P = X.pooled[s], col = COL[s];
       const up = P.pts.map(p => [x(p[0]), y(p[3])]), dn = P.pts.map(p => [x(p[0]), y(p[2])]).reverse();
-      const band = svgEl('path', { d: 'M' + up.map(q => q.join(',')).join('L') + 'L' + dn.map(q => q.join(',')).join('L') + 'Z', fill: col, 'fill-opacity': .12 }, layer);
+      const band = svgEl('path', { d: 'M' + up.map(q => q.join(',')).join('L') + 'L' + dn.map(q => q.join(',')).join('L') + 'Z', fill: col, 'fill-opacity': .2 }, layer);
       band.style.opacity = 0; band.style.transition = 'opacity 1.2s .4s';
-      (D.req[YEARLY[s]] || []).forEach(([yr, est]) => svgEl('circle', { cx: x(yr), cy: y(est), r: 3, fill: col, 'fill-opacity': .45 }, layer));
+      (D.req[YEARLY[s]] || []).forEach(([yr, est]) => svgEl('circle', { cx: x(yr), cy: y(est), r: 3, fill: col, 'fill-opacity': .4 }, layer));
       const line = svgEl('path', { d: 'M' + P.pts.map(p => `${x(p[0])},${y(p[1])}`).join('L'), fill: 'none', stroke: col, 'stroke-width': 3, class: 'draw' }, layer);
       const len = line.getTotalLength(); line.style.setProperty('--len', len);
       requestAnimationFrame(() => requestAnimationFrame(() => { line.style.strokeDashoffset = 0; band.style.opacity = 1; }));
       const a = P.pts[0], b = P.pts[P.pts.length - 1];
-      [[a, 'start'], [b, 'end']].forEach(([p, anc]) => {
-        const t = svgEl('text', { x: x(p[0]) + (anc === 'start' ? 6 : -6), y: y(p[1]) - 14, 'text-anchor': anc, fill: col, 'font-family': 'Barlow Condensed', 'font-weight': 700, 'font-size': 22 }, layer);
-        t.textContent = `${p[1] >= 10 ? Math.round(p[1]) : fmt(p[1])} t`;
-      });
-      const note = svgEl('text', { x: x(2022) - 6, y: y(b[1]) + 26, 'text-anchor': 'end', fill: '#a5a9b4', 'font-family': 'Barlow', 'font-size': 12 }, layer);
-      note.textContent = `${fmt(P.pct)}% a year (95% CI ${fmt(P.pct_lo)} to ${fmt(P.pct_hi)}) · 2022: ${fmt(b[2])}–${fmt(b[3])} t`;
+      const tv = v => (v >= 10 ? Math.round(v) : fmt(v));
+      Explain.annotate(layer, { x: x(a[0]), y: y(a[1]), tx: x(a[0]) + 16, ty: y(a[1]) - 26, anchor: 'start', text: [`1991: ${tv(a[1])} T`, `95% CI ${tv(a[2])}–${tv(a[3])} t`], color: col, delay: 900 });
+      Explain.annotate(layer, { x: x(b[0]), y: y(b[1]), tx: x(b[0]) + 16, ty: y(b[1]) - 6, anchor: 'start', text: [`2022: ${tv(b[1])} T`, `95% CI ${tv(b[2])}–${tv(b[3])} t`], color: col, delay: 1300 });
+      // the remaining gap at 2022
+      const gx = x(2022) + 110, ratio = b[1] / B;
+      const gap = svgEl('g', { class: 'annot' }, layer);
+      svgEl('line', { x1: gx, x2: gx, y1: y(b[1]), y2: y(B), stroke: '#ffb454', 'stroke-width': 1.5 }, gap);
+      svgEl('line', { x1: gx - 5, x2: gx + 5, y1: y(b[1]), y2: y(b[1]), stroke: '#ffb454' }, gap);
+      svgEl('line', { x1: gx - 5, x2: gx + 5, y1: y(B), y2: y(B), stroke: '#ffb454' }, gap);
+      const gt = svgEl('text', { x: gx + 10, y: (y(b[1]) + y(B)) / 2, fill: '#ffb454', 'font-family': 'IBM Plex Mono', 'font-size': 12, 'font-weight': 500 }, gap); gt.textContent = `${ratio.toFixed(1)}×`;
+      const gt2 = svgEl('text', { x: gx + 10, y: (y(b[1]) + y(B)) / 2 + 15, fill: '#a5a9b4', 'font-family': 'IBM Plex Mono', 'font-size': 10.5 }, gap); gt2.textContent = 'THE GAP';
+      setTimeout(() => gap.classList.add('on'), prefersReducedMotion ? 0 : 1700);
       P.pts.forEach(p => {
-        const h = svgEl('rect', { x: x(p[0]) - 9, y: m.t, width: 18, height: H - m.t - m.b, fill: 'transparent' }, layer);
-        h.addEventListener('pointerenter', e => showTip(`<b>${p[0]}</b>Pooled: ${fmt(p[1])} t (95% CI ${fmt(p[2])}–${fmt(p[3])})`, e.clientX, e.clientY));
+        const h = svgEl('rect', { x: x(p[0]) - 12, y: m.t, width: 24, height: H - m.t - m.b, fill: 'transparent' }, layer);
+        h.addEventListener('pointerenter', e => showTip(`<b>${p[0]}</b>Half of countries meet ${NAME[s]} at ${fmt(p[1])} t CO₂ per person<br>95% CI ${fmt(p[2])}–${fmt(p[3])} t · ${(p[1] / B).toFixed(1)}× the fair share`, e.clientX, e.clientY));
         h.addEventListener('pointerleave', hideTip);
       });
+      RO.set([
+        ['Measure', s === 'main' ? 'All 4 needs' : s === 'health' ? 'Health only' : 'Production CO₂'],
+        ['1991', tv(a[1]) + ' t', `95% CI ${tv(a[2])}–${tv(a[3])}`],
+        ['2022', fmt(b[1]) + ' t', `95% CI ${fmt(b[2])}–${fmt(b[3])}`],
+        ['Change per year', fmt(P.pct) + '%', `95% CI ${fmt(P.pct_lo)} to ${fmt(P.pct_hi)}`, 'up'],
+        ['Gap to fair share', ratio.toFixed(1) + '×', '2022 vs 1.61 t', ratio > 1 ? 'warn' : 'up']
+      ]);
+      TK.set(`For half of countries to meet ${NAME[s]}, it took about <b>${tv(a[1])} t</b> of CO₂ per person in 1991 and <b>${fmt(b[1])} t</b> in 2022: a fall of ${fmt(-P.pct)}% a year (95% CI ${fmt(-P.pct_hi)} to ${fmt(-P.pct_lo)}%). The cost of development in carbon is falling, but in 2022 it was still <b>${ratio.toFixed(1)} times</b> the fair share.`);
+      leg.innerHTML = `<span><i style="background:${col}"></i>Pooled estimate</span><span><i style="background:${col};opacity:.3"></i>95% interval</span><span><i style="background:${col};opacity:.45;border-radius:50%"></i>One-year estimates</span>`;
     }
-    document.querySelectorAll('#reqviz [data-s]').forEach(b => b.addEventListener('click', () => {
-      document.querySelectorAll('#reqviz [data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); draw(b.dataset.s);
+    viz.querySelectorAll('[data-s]').forEach(b => b.addEventListener('click', () => {
+      viz.querySelectorAll('[data-s]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); draw(b.dataset.s);
     }));
-    onReveal(document.getElementById('reqviz'), () => draw('main'));
+    onReveal(viz, () => draw('main'));
   })();
 
   // =============================================================== country profiles
   (function profile() {
     const sel = document.getElementById('pf-country');
     if (!sel) return;
+    const viz = document.getElementById('profviz');
+    Explain.guide(viz, [
+      'The <strong>coloured strip</strong> shows the country\u2019s situation in every year from 1991, using the same four colours as the map.',
+      'Each small chart is one basic need or one CO₂ measure. The <strong>orange dashed line</strong> is its threshold.',
+      '<strong style="color:#5fd1b0">Green</strong> points pass the threshold, <strong style="color:#ef6f6c">red</strong> points fail. Outlined points are provisional newer data.'
+    ]);
+    const RO = Explain.readout(viz), TK = Explain.takeaway(viz);
+    document.getElementById("pf-strip").after(RO.el);
     sel.innerHTML = isos.map(i => `<option value="${i}"${i === 'IND' ? ' selected' : ''}>${D.C[i].n}</option>`).join('');
     const quick = ['IND', 'CHN', 'USA', 'BRA', 'NGA', 'CRI', 'LKA', 'DEU'];
     const qh = document.getElementById('pf-quick');
@@ -276,7 +358,9 @@
       const v = [...vals.filter(z => z != null), ...lv.map(p => p[1])];
       const box = document.createElement('div'); box.className = 'pf-card';
       const last = [...vals].reverse().find(z => z != null);
-      box.innerHTML = `<div class="pf-t"><span>${label}</span><b>${last == null ? 'n/a' : fmt(last, key === 'cons' || key === 'prod' ? 2 : 1)}<small> ${unit}</small></b></div>`;
+      const pass = last == null ? null : (higher ? last >= thr : last <= thr);
+      const thrTxt = `${key === 'cons' || key === 'prod' ? 'fair share' : 'threshold'} ${higher ? '≥' : '≤'} ${thr}${key === 'cons' || key === 'prod' ? ' t' : ''}`;
+      box.innerHTML = `<div class="pf-t"><span>${label}</span><b>${last == null ? 'n/a' : fmt(last, key === 'cons' || key === 'prod' ? 2 : 1)}<small> ${unit}</small></b></div><div class="pf-thr"><span>${thrTxt}</span>${pass == null ? '' : `<em class="${pass ? 'ok' : 'no'}">${pass ? 'PASS' : 'FAIL'} 2022</em>`}</div>`;
       host.appendChild(box);
       if (!v.length) { box.insertAdjacentHTML('beforeend', '<p class="muted small">No data</p>'); return; }
       const svg = svgEl('svg', { viewBox: `0 0 ${W} ${H}` }, box);
@@ -328,6 +412,20 @@
       strip.insertAdjacentHTML('beforeend', `<em>1991</em><em>${YMAX}${YMAX > LAST ? ' · outlined = provisional' : ''}</em>`);
       const grid = document.getElementById('pf-grid'); grid.innerHTML = '';
       PANELS.forEach(([k, l, u, t, h, lo, hi]) => spark(grid, k, l, u, t, h, lo, hi, c, iso));
+      // summary: needs met in 2022, which are missing, emissions vs fair share, years in each situation
+      const names = { le: 'life expectancy', cm: 'child survival', el: 'electricity', em: 'employment' };
+      const miss = PANELS.slice(0, 4).filter(([k, , , t, h]) => c[k][i] != null && !(h ? c[k][i] >= t : c[k][i] <= t)).map(p => names[p[0]]);
+      const yrs = [0, 0, 0, 0]; let first = null;
+      for (let j = 1; j <= 32; j++) { const qq = quad(c, j); if (qq != null) yrs[qq]++; if (first == null && c.met[j] === 4) first = 1990 + j; }
+      const e = c.cons[i] ?? c.prod[i], basis = c.cons[i] != null ? 'consumption' : 'production';
+      RO.set([
+        ['Needs met, 2022', c.met[i] == null ? 'n/a' : `${c.met[i]} of 4`, miss.length ? 'missing: ' + miss.join(', ') : 'all four', c.met[i] === 4 ? 'up' : 'down'],
+        ['CO₂ per person', e == null ? 'n/a' : fmt(e, 2) + ' t', basis + ', 2022'],
+        ['vs fair share', e == null ? 'n/a' : xr(e) + '×', '1.61 t per person', e != null && e > B ? 'down' : 'up'],
+        ['First met all four', first ?? 'never', first ? 'since 1991' : 'in 1991–2022'],
+        ['Years safe and just', yrs[3], 'of 32', yrs[3] ? 'up' : 'warn']
+      ]);
+      TK.set(`In 2022 <b>${c.n}</b> met ${c.met[i] ?? 'an unknown number of'} of the four basic needs${miss.length ? ` (falling short on ${miss.join(' and ')})` : ''} and emitted ${e == null ? 'an unknown amount of' : `<b>${fmt(e, 2)} t</b>`} CO₂ per person on a ${basis} basis${e == null ? '' : `, ${e > B ? xr(e) + ' times' : 'within'} the fair share`}. ${first === 1991 ? 'It already met all four in 1991.' : first ? `It first met all four in ${first}.` : 'It has not met all four in any year since 1991.'} ${yrs[3] ? `It was safe and just in ${yrs[3]} years.` : 'It was never safe and just.'}`);
     }
     show('IND');
   })();

@@ -15,7 +15,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css?v=20261119c">
+<link rel="stylesheet" href="assets/site.css?v=20261119d">
 </head>
 <body>
 <a class="skip" href="#question">Skip to content</a>
@@ -30,7 +30,7 @@
       <li><a href="#cost">Carbon cost</a></li>
       <li><a href="#decoupling">Decoupling</a></li>
       <li><a href="#countries">Countries</a></li>
-      <li><a href="#evidence">Evidence</a></li>
+      <li><a href="#evidence">Method</a></li>
       <li><a href="#live">Live data</a></li>
       <li><a href="explorer.html">Explorer</a></li>
       <li><a href="social-shortfall-climate-overshoot.pdf">Paper</a></li>
@@ -83,14 +83,21 @@
       </div>
       <div data-reveal style="--d:.15s">
         <p class="lead">Is a country meeting the basic needs of its people? And is it doing so within a fair, equal-per-person share of the climate boundary?</p>
-        <p class="muted"><strong>The social foundation</strong> asks for life expectancy of at least 74 years, under-5 mortality of at most 25 per 1,000 births, electricity access for at least 95% of people, and employment for at least 94% of the labour force. <strong>The climate boundary</strong> divides the remaining 2&nbsp;°C carbon budget equally among all people: 1.61 t of CO₂ per person per year, counted on a consumption basis so that emissions embodied in imports count where goods are used.</p>
+        <p class="muted">The study checks both questions for 155 countries in every year from 1990 to 2022. The four ideas below are all you need to read every chart on this page. Underlined words explain themselves when you point at them.</p>
       </div>
     </div>
-    <div class="cards" style="margin-top:64px">
-      <div class="card" data-reveal><span class="swatch" style="background:var(--q0)"></span><h3>Shortfall, within boundary</h3><p>Basic needs unmet, low emissions.</p></div>
-      <div class="card" data-reveal style="--d:.08s"><span class="swatch" style="background:var(--q1)"></span><h3>Shortfall and overshoot</h3><p>Basic needs unmet, emissions too high.</p></div>
-      <div class="card" data-reveal style="--d:.16s"><span class="swatch" style="background:var(--q2)"></span><h3>Foundation met, overshoot</h3><p>Needs met, at a climate cost.</p></div>
-      <div class="card" data-reveal style="--d:.24s"><span class="swatch" style="background:var(--q3)"></span><h3>Safe and just</h3><p>Needs met within the boundary. Never reached in the sample.</p></div>
+    <div class="primer">
+      <div data-reveal><span class="k">Idea 1 · Basic needs</span><h3>The social foundation</h3><p>The minimum for a decent life, measured with four thresholds. A country "meets the foundation" only if it passes all four in the same year.</p><p class="eg">Life expectancy ≥ 74 yrs<br>Under-5 deaths ≤ 25 per 1,000 births<br>Electricity for ≥ 95% of people<br>Employment ≥ 94% of the labour force</p></div>
+      <div data-reveal style="--d:.08s"><span class="k">Idea 2 · Fair share</span><h3>The climate boundary</h3><p>Every person's equal share of the CO₂ the world can still emit while keeping warming below 2&nbsp;°C, spread evenly over the years to 2050.</p><p class="eg">1.61 t CO₂ per person per year<br>For 1.5&nbsp;°C: 0.79 t</p></div>
+      <div data-reveal style="--d:.16s"><span class="k">Idea 3 · Who emits</span><h3>Consumption-based CO₂</h3><p>Emissions are counted where goods are used, not where they are made, so a phone built in one country and bought in another counts for the buyer.</p><p class="eg">Switzerland, 2022<br>Made at home: 3.8 t per person<br>Consumed: 14.3 t per person</p></div>
+      <div data-reveal style="--d:.24s"><span class="k">Idea 4 · The price</span><h3>The carbon requirement</h3><p>The CO₂ per person at which half of all countries meet the foundation. It summarises how much carbon development has typically cost.</p><p class="eg">1991: about 26 t per person<br>2022: 8.5 t (95% CI 6.5–11.2)</p></div>
+    </div>
+    <p class="eyebrow" style="margin-top:72px" data-reveal>Two tests give four situations</p>
+    <div class="cards" style="margin-top:20px">
+      <div class="card" data-reveal><span class="swatch" style="background:var(--q0)"></span><h3>Shortfall, within boundary</h3><p>At least one basic need unmet; emissions within the fair share.</p></div>
+      <div class="card" data-reveal style="--d:.08s"><span class="swatch" style="background:var(--q1)"></span><h3>Shortfall and overshoot</h3><p>At least one basic need unmet, and emissions above the fair share.</p></div>
+      <div class="card" data-reveal style="--d:.16s"><span class="swatch" style="background:var(--q2)"></span><h3>Foundation met, overshoot</h3><p>All four needs met, but at a climate cost above the fair share.</p></div>
+      <div class="card" data-reveal style="--d:.24s"><span class="swatch" style="background:var(--q3)"></span><h3>Safe and just</h3><p>All four needs met within the fair share. The goal. No country reached it.</p></div>
     </div>
   </div>
 </section>
@@ -98,21 +105,26 @@
 <!-- ============================== SPACE (centrepiece) -->
 <section id="space" class="band" style="padding-top:0" aria-labelledby="sp-h">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>02 / The social–climate space</p>
-    <h2 class="h2" id="sp-h" data-reveal>Thirty-two years. One empty corner.</h2>
-    <p class="lead" data-reveal>Each bubble is a country, sized by population. Up means closer to meeting all four social thresholds; right means more CO₂ per person. The top-left corner is the safe and just space. Press play and watch countries rise to the foundation, always on the far side of the boundary.</p>
+    <div class="split">
+      <div>
+        <p class="eyebrow" data-reveal>02 / The social–climate space</p>
+        <h2 class="h2" id="sp-h" data-reveal>Thirty-two years. One empty corner.</h2>
+      </div>
+      <p class="lead" data-reveal style="--d:.1s">Press play to watch 114 countries move through 1991–2022. Countries climb towards the top as they meet more basic needs, and drift right as they emit more. The green box in the top-left corner, where needs are met within the <span data-term="boundary">fair share</span>, stays empty.</p>
+    </div>
     <div class="viz" id="spaceviz">
       <div class="viz-head">
+        <span class="viz-title">Social attainment against CO₂ per person · 114 countries</span>
+        <div class="seg" role="group" aria-label="Region" id="sp-region"></div>
+      </div>
+      <div class="viz-head">
         <div class="range"><button class="play" id="sp-play" aria-label="Play years">▶</button><input type="range" id="sp-year" min="1991" max="2022" value="1991" aria-label="Year"><output id="sp-out">1991</output></div>
-        <div class="controls">
-          <label class="search"><span class="sr">Highlight a country</span><input id="sp-find" list="sp-list" placeholder="Highlight a country…" autocomplete="off"></label><datalist id="sp-list"></datalist>
-          <div class="seg" role="group" aria-label="Region" id="sp-region"></div>
-        </div>
+        <label class="search"><span class="sr">Highlight a country</span><input id="sp-find" list="sp-list" placeholder="Highlight a country…" autocomplete="off"></label><datalist id="sp-list"></datalist>
       </div>
       <div class="chips" id="sp-chips" aria-label="Highlighted countries"></div>
       <svg id="space-svg" aria-label="Animated bubble chart of social attainment against consumption-based CO2 per person"></svg>
-      <div class="legend"><span><i style="background:var(--q0)"></i>Shortfall, within</span><span><i style="background:var(--q1)"></i>Shortfall, overshoot</span><span><i style="background:var(--q2)"></i>Foundation met, overshoot</span><span><i style="background:var(--q3)"></i>Safe and just</span><span><i style="background:transparent;border:1px solid #fff"></i>Highlighted path since 1991</span></div>
-      <p class="viz-note">Social attainment is the mean of the four threshold ratios, each capped at 1; it equals 1 only when all four thresholds are met. Consumption-based CO₂, log scale.</p>
+      <div class="legend"><span><i style="background:var(--q0)"></i>Shortfall, within</span><span><i style="background:var(--q1)"></i>Shortfall, overshoot</span><span><i style="background:var(--q2)"></i>Foundation met, overshoot</span><span><i style="background:var(--q3)"></i>Safe and just</span><span><i style="background:transparent;border:1px solid #fff"></i>Path since 1991 (highlighted countries)</span></div>
+      <p class="viz-note"><span data-term="attainment">Social attainment</span> is the average of the four threshold ratios, each capped at 1; it equals 1.0 only when all four thresholds are met. CO₂ on a <span data-term="log">log scale</span>.</p>
     </div>
   </div>
 </section>
@@ -127,36 +139,40 @@
   </div></div>
 </section>
 
-
 <!-- ============================== CROSSING -->
 <section id="crossing" class="band" aria-labelledby="cr-h">
   <div class="wrap">
     <div class="split">
-      <div data-reveal>
-        <p class="eyebrow">04 / The crossing</p>
-        <h2 class="h2" id="cr-h">Every crossing happened above the line.</h2>
-        <p class="muted">Each dot is a country in the year it first met all four social thresholds, placed by its consumption-based CO₂ per person in that year. Not one crossed to the left of the 1.61 t boundary. The median crosser emitted 8.6 t.</p>
-        <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:32px">
+      <div>
+        <p class="eyebrow" data-reveal>04 / The crossing</p>
+        <h2 class="h2" id="cr-h" data-reveal>Every crossing happened above the line.</h2>
+        <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:32px" data-reveal>
           <div class="stat"><b><span data-count="36">36</span><small>of 36</small></b><span>crossed while overshooting</span></div>
           <div class="stat"><b><span data-count="30">30</span><small>of 30</small></b><span>under a three-year sustained definition</span></div>
         </div>
       </div>
-      <div class="viz" id="crossviz"><div class="viz-head"><span class="viz-title">CO₂ per person in the year of crossing</span><div class="seg" role="group" aria-label="Colour"><button aria-pressed="true" data-c="decade">By decade</button><button aria-pressed="false" data-c="sust">Sustained</button></div></div><svg id="cross" aria-label="CO2 per person of the 36 countries in the year they crossed the social foundation"></svg><div class="legend" id="cross-legend"></div></div>
+      <p class="muted" data-reveal style="--d:.1s">36 countries went from failing at least one basic need to meeting all four during 1991–2022. Each dot below is one of them, placed at the CO₂ per person it emitted in the year it got there. Not one got there to the left of the 1.61&nbsp;t boundary.</p>
     </div>
+    <div class="viz" id="crossviz"><div class="viz-head"><span class="viz-title">CO₂ per person in the year each country met all four needs</span><div class="seg" role="group" aria-label="Colour"><button aria-pressed="true" data-c="decade">By decade</button><button aria-pressed="false" data-c="sust">Sustained</button></div></div><svg id="cross" aria-label="CO2 per person of the 36 countries in the year they crossed the social foundation"></svg><div class="legend" id="cross-legend"></div></div>
   </div>
 </section>
 
 <!-- ============================== WORLD MAP -->
-<section id="world" class="band" aria-labelledby="w-h">
+<section id="world" class="band" style="padding-top:0" aria-labelledby="w-h">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>05 / The map, year by year</p>
-    <h2 class="h2" id="w-h" data-reveal>Where every country stands</h2>
-    <p class="lead" data-reveal>Drag through the years or press play. Grey countries have no consumption-based estimate; switch to production-based emissions to see all 155.</p>
+    <div class="split">
+      <div>
+        <p class="eyebrow" data-reveal>05 / The map, year by year</p>
+        <h2 class="h2" id="w-h" data-reveal>Where every country stands</h2>
+      </div>
+      <p class="lead" data-reveal style="--d:.1s">Each country is coloured by its situation in the chosen year. Watch the blue (needs met, overshooting) spread from Europe and the Americas, and the yellow (needs unmet, low emissions) shrink across Africa and Asia.</p>
+    </div>
     <div class="viz" id="mapviz">
       <div class="viz-head">
-        <div class="range"><button class="play" id="map-play" aria-label="Play years">▶</button><input type="range" id="map-year" min="1991" max="2022" value="2022" aria-label="Year"><output id="map-out">2022</output></div>
+        <span class="viz-title">Situation of every country · year by year</span>
         <div class="seg" role="group" aria-label="Emissions basis"><button aria-pressed="true" data-acc="cons">Consumption</button><button aria-pressed="false" data-acc="prod">Production</button></div>
       </div>
+      <div class="viz-head"><div class="range"><button class="play" id="map-play" aria-label="Play years">▶</button><input type="range" id="map-year" min="1991" max="2022" value="2022" aria-label="Year"><output id="map-out">2022</output></div></div>
       <svg id="map" aria-label="World map of configurations"></svg>
       <div class="legend" id="map-legend"></div>
       <p class="viz-note" id="map-note"></p>
@@ -166,16 +182,18 @@
 
 <!-- ============================== SHARES -->
 <section class="band" style="padding-top:0" aria-labelledby="s-h">
-  <div class="wrap split rev">
+  <div class="wrap">
+    <div class="split">
+      <div>
+        <p class="eyebrow" data-reveal>06 / Over three decades</p>
+        <h2 class="h2" id="s-h" data-reveal>More needs met. More overshoot.</h2>
+      </div>
+      <p class="muted" data-reveal style="--d:.1s">The share of countries meeting all four basic needs grew, but always on the overshoot side of the boundary. Situations are also sticky: 83% of countries stayed in the same situation from one period to the next, and none moved into the safe and just space.</p>
+    </div>
     <div class="viz" id="sharesviz">
-      <div class="viz-head"><span class="viz-title">Share of countries by configuration · consumption basis</span></div>
+      <div class="viz-head"><span class="viz-title">Share of countries in each situation · consumption basis</span></div>
       <svg id="shares" aria-label="Stacked area chart of configuration shares, 1991 to 2022"></svg>
       <div class="legend"><span><i style="background:var(--q0)"></i>Shortfall, within</span><span><i style="background:var(--q1)"></i>Shortfall, overshoot</span><span><i style="background:var(--q2)"></i>Met, overshoot</span><span><i style="background:var(--q3)"></i>Safe and just</span></div>
-    </div>
-    <div data-reveal>
-      <p class="eyebrow">06 / Over three decades</p>
-      <h2 class="h2" id="s-h">More needs met. More overshoot.</h2>
-      <p class="muted">The share of countries meeting the foundation grew, but always on the overshoot side of the boundary. The safe and just band stays empty in every year. Configurations are also sticky: 83% of countries stayed in the same configuration from one period to the next, and no country moved into the safe and just space.</p>
     </div>
   </div>
 </section>
@@ -184,21 +202,22 @@
 <section id="cost" class="band" style="background:linear-gradient(#000,#05080d 40%,#000)" aria-labelledby="c-h">
   <div class="wrap">
     <div class="split">
-      <div data-reveal>
-        <p class="eyebrow">07 / The carbon cost of development</p>
-        <h2 class="h2" id="c-h">Falling fast. Still five times too high.</h2>
-        <p class="muted">The carbon requirement is the CO₂ per person at which half of countries meet the social foundation, estimated each year with a logistic model. It fell about 3.6% a year, from roughly 26 t in 1991 to 8.5 t in 2022. For the two health thresholds alone it fell to 2.6 t. It is a cross-country summary, not what any single country needs.</p>
-        <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:36px">
+      <div>
+        <p class="eyebrow" data-reveal>07 / The carbon cost of development</p>
+        <h2 class="h2" id="c-h" data-reveal>Falling fast. Still five times too high.</h2>
+        <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:32px" data-reveal>
           <div class="stat"><b><span data-count="3.6" data-dec="1">3.6</span><small>%/yr</small></b><span>pooled decline in the requirement</span></div>
           <div class="stat"><b><span data-count="2.6" data-dec="1">2.6</span><small>t</small></b><span>health thresholds only, 2022</span></div>
         </div>
       </div>
-      <div class="viz" id="reqviz">
-        <div class="viz-head"><span class="viz-title">Carbon requirement, t CO₂ per person (log scale)</span>
-          <div class="seg" role="group" aria-label="Series"><button aria-pressed="true" data-s="main">Four thresholds</button><button aria-pressed="false" data-s="health">Health only</button><button aria-pressed="false" data-s="production">Production CO₂</button></div></div>
-        <svg id="req" aria-label="Carbon requirement over time"></svg>
-        <p class="viz-note">Band and line: pooled estimate with 95% country-cluster bootstrap interval (2,000 draws). Dots: separate yearly estimates. Dashed: the 1.61 t boundary (2&nbsp;°C) and 0.79 t (1.5&nbsp;°C).</p>
-      </div>
+      <p class="muted" data-reveal style="--d:.1s">The <span data-term="requirement">carbon requirement</span> is the CO₂ per person at which half of countries meet the social foundation, estimated each year with a <span data-term="logistic">logistic model</span>. It fell about 3.6% a year, from roughly 26&nbsp;t in 1991 to 8.5&nbsp;t in 2022. For the two health thresholds alone it fell to 2.6&nbsp;t. It is a cross-country summary, not what any single country needs.</p>
+    </div>
+    <div class="viz" id="reqviz">
+      <div class="viz-head"><span class="viz-title">Carbon requirement, t CO₂ per person · log scale</span>
+        <div class="seg" role="group" aria-label="Series"><button aria-pressed="true" data-s="main">Four thresholds</button><button aria-pressed="false" data-s="health">Health only</button><button aria-pressed="false" data-s="production">Production CO₂</button></div></div>
+      <svg id="req" aria-label="Carbon requirement over time"></svg>
+      <div class="legend" id="req-legend"></div>
+      <p class="viz-note">Line and band: pooled estimate with its 95% <span data-term="bootstrap">country-cluster bootstrap</span> interval (2,000 draws). Dots: separate estimates for each year. Dashed lines: the 1.61&nbsp;t boundary (2&nbsp;°C) and 0.79&nbsp;t (1.5&nbsp;°C).</p>
     </div>
   </div>
 </section>
@@ -207,25 +226,24 @@
 <section id="decoupling" class="band" aria-labelledby="d-h">
   <div class="wrap">
     <div class="split">
-      <div data-reveal>
-        <p class="eyebrow">08 / Decoupling</p>
-        <h2 class="h2" id="d-h">Spreading. Not nearly fast enough.</h2>
-        <p class="muted">Absolute decoupling, where income grows while consumption emissions fall, spread from 24 countries in 2001–2010 to 48 of 114 in 2011–2022. But among the 41 decouplers still above the boundary, the median cut was 1.6% a year against 5.5% needed to reach 1.61 t by 2050. Only Albania and the Dominican Republic are on track.</p>
-        <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:36px">
+      <div>
+        <p class="eyebrow" data-reveal>08 / Decoupling</p>
+        <h2 class="h2" id="d-h" data-reveal>Spreading. Not nearly fast enough.</h2>
+        <div class="stats" style="grid-template-columns:1fr 1fr;margin-top:32px" data-reveal>
           <div class="stat"><b><span data-count="24">24</span><small>→ <span data-count="48">48</span></small></b><span>countries decoupling absolutely, 2001–2010 vs 2011–2022</span></div>
           <div class="stat"><b><span data-count="1.6" data-dec="1">1.6</span><small>vs 5.5%</small></b><span>median annual cut achieved vs required</span></div>
         </div>
       </div>
-      <div class="viz" id="decviz">
-        <div class="viz-head"><span class="viz-title">Annual change in CO₂ per person, 2011–2022</span></div>
-        <svg id="dec" aria-label="Achieved versus required emission cuts for 41 decouplers above the boundary"></svg>
-        <div class="legend"><span><i style="background:#fff;border-radius:50%"></i>Achieved</span><span><i style="background:var(--warm)"></i>Required for 2050</span><span><i style="background:var(--q3)"></i>On track</span></div>
-      </div>
+      <p class="muted" data-reveal style="--d:.1s"><span data-term="decoupling">Absolute decoupling</span>, where income grows while consumption emissions fall, spread from 24 countries in 2001–2010 to 48 of 114 in 2011–2022. But among the 41 decouplers still above the boundary, the median cut was 1.6% a year against 5.5% needed to reach 1.61&nbsp;t by 2050. Only Albania and the Dominican Republic are on track.</p>
+    </div>
+    <div class="viz" id="decviz">
+      <div class="viz-head"><span class="viz-title">Annual change in CO₂ per person, 2011–2022 · 41 decouplers above the boundary</span></div>
+      <svg id="dec" aria-label="Achieved versus required emission cuts for 41 decouplers above the boundary"></svg>
+      <div class="legend"><span><i style="background:#fff;border-radius:50%"></i>Cut achieved per year</span><span><i style="background:var(--warm);transform:rotate(45deg) scale(.8)"></i>Cut required per year to reach 1.61&nbsp;t by 2050</span><span><i style="background:var(--q3);border-radius:50%"></i>On track</span></div>
     </div>
 
-    <div style="margin-top:96px" data-reveal>
-      <p class="eyebrow">What if they went faster?</p>
-      <h3 class="h2" style="font-size:clamp(26px,3vw,40px)">Countries reaching the boundary by 2050, out of 41</h3>
+    <div class="viz" id="scenviz" style="margin-top:32px">
+      <div class="viz-head"><span class="viz-title">What if they went faster? Countries reaching the boundary by 2050, out of 41</span></div>
       <div id="scen" class="scen"></div>
       <p class="viz-note">Constant-rate projections from 2022. They are illustrative scenarios, not forecasts.</p>
     </div>
@@ -235,9 +253,15 @@
 <!-- ============================== COUNTRIES -->
 <section id="countries" class="band" style="background:linear-gradient(#000,#070a10 30%,#000)" aria-labelledby="co-h">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>09 / Country by country</p>
-    <h2 class="h2" id="co-h" data-reveal>Pick a country. See its path.</h2>
+    <div class="split">
+      <div>
+        <p class="eyebrow" data-reveal>09 / Country by country</p>
+        <h2 class="h2" id="co-h" data-reveal>Pick a country. See its path.</h2>
+      </div>
+      <p class="lead" data-reveal style="--d:.1s">Choose any of the 155 countries to see its four basic needs and its emissions every year since 1991, each against its threshold, and the situation it was in.</p>
+    </div>
     <div class="viz" id="profviz">
+      <div class="viz-head"><span class="viz-title">Country profile · 1991–2022 and latest data</span></div>
       <div class="viz-head">
         <label class="search"><span class="sr">Country</span><select id="pf-country" aria-label="Country"></select></label>
         <div class="chips" id="pf-quick"></div>
@@ -255,7 +279,7 @@
   <div class="wrap">
     <div class="live-box" data-reveal>
       <div>
-        <p class="eyebrow"><span class="pulse"></span>Latest data · provisional</p>
+        <p class="eyebrow"><span class="pulse"></span>10 / Latest data · provisional</p>
         <h2 class="h2" id="lv-h" style="font-size:clamp(28px,3.4vw,48px)">Updated <span id="lv-when">weekly</span></h2>
         <p class="muted">Every Monday a scheduled job downloads the newest World Bank indicators and Global Carbon Budget emissions and applies the paper's rule to years after 2022: a country meets the foundation only if all four thresholds are observed and met. Raw values, no gap filling, no re-estimation. The paper's results stay fixed to its data vintage.</p>
         <p class="muted small">Changes are paired comparisons of the same countries between the paper's 2022 values and the newest live year; part of any change can come from data revisions rather than real change.</p>
@@ -270,7 +294,7 @@
 <section class="scene right" aria-label="Interpretation">
   <div class="bg" style="background-image:url(assets/img/night-europe.jpg)"></div>
   <div class="inner"><div>
-    <p class="eyebrow" data-reveal>10 / What it means</p>
+    <p class="eyebrow" data-reveal>11 / What it means</p>
     <p class="quote" data-reveal>Development has become far less carbon-intensive. Not yet fast enough.</p>
     <p class="lead" data-reveal style="--d:.15s;margin-top:22px">Closing the gap needs emission cuts faster than any country has sustained, together with ways of providing basic needs that keep their carbon cost falling.</p>
     <div class="btns" data-reveal style="--d:.3s"><a class="btn" href="explorer.html">Open the full explorer <span class="arr">→</span></a></div>
@@ -280,7 +304,7 @@
 <!-- ============================== EVIDENCE -->
 <section id="evidence" class="band" aria-labelledby="e-h">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>11 / The evidence</p>
+    <p class="eyebrow" data-reveal>12 / The evidence</p>
     <h2 class="h2" id="e-h" data-reveal>How it was done</h2>
     <div class="split" style="margin-top:40px">
       <ol class="steps" data-reveal>
@@ -308,10 +332,21 @@
   </div>
 </section>
 
+<!-- ============================== GLOSSARY -->
+<section id="glossary" class="band" style="padding-top:0" aria-labelledby="g-h">
+  <div class="wrap">
+    <div class="split">
+      <div><p class="eyebrow" data-reveal>13 / Glossary</p><h2 class="h2" id="g-h" data-reveal>Every term, in plain words</h2></div>
+      <p class="muted" data-reveal style="--d:.1s">The same definitions appear when you point at an underlined word anywhere on the page.</p>
+    </div>
+    <dl class="gloss" id="gloss" data-reveal></dl>
+  </div>
+</section>
+
 <!-- ============================== FIGURES -->
 <section id="figures" class="band" style="padding-top:0" aria-labelledby="f-h">
   <div class="wrap">
-    <p class="eyebrow" data-reveal>12 / Original figures</p>
+    <p class="eyebrow" data-reveal>14 / Original figures</p>
     <h2 class="h2" id="f-h" data-reveal>From the paper</h2>
     <div class="gallery" style="margin-top:36px">
       <figure data-reveal><button data-zoom="figures/fig0_framework.png" data-cap="Framework: two criteria, four configurations"><img src="figures/fig0_framework.png" alt="Framework: two criteria, four configurations" loading="lazy"></button><figcaption>Framework</figcaption></figure>
@@ -351,14 +386,14 @@
 
 <dialog class="lightbox" aria-label="Figure"><button aria-label="Close">×</button><img alt=""><p></p></dialog>
 
-<script src="climate-data.js?v=20261119c"></script>
+<script src="climate-data.js?v=20261119d"></script>
 <script src="assets/vendor/d3-array.min.js"></script>
 <script src="assets/vendor/d3-geo.min.js"></script>
 <script src="assets/vendor/topojson-client.min.js"></script>
-<script src="assets/site.js?v=20261119c"></script>
-<script src="assets/map.js?v=20261119c"></script>
-<script src="assets/climate.js?v=20261119c"></script>
-<script src="assets/climate2.js?v=20261119c"></script>
+<script src="assets/site.js?v=20261119d"></script>
+<script src="assets/map.js?v=20261119d"></script>
+<script src="assets/climate.js?v=20261119d"></script>
+<script src="assets/climate2.js?v=20261119d"></script>
 <script type="module">
   import { mountGlobe } from './assets/globe.js';
   const run = async () => {
