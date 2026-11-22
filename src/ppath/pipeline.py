@@ -426,7 +426,9 @@ def run(quick: bool = False) -> dict:
         config.RESULTS / "safe_and_just_production_country_years.csv"
     )
     N.add("prodSafeYearsAll", len(ps_all))
-    N.add("prodSafeCountriesAll", ", ".join(sorted(ps_all["country"].unique())) or "none", fmt="s")
+    ps_names = sorted(ps_all["country"].unique())
+    ps_text = " and ".join([", ".join(ps_names[:-1]), ps_names[-1]]) if len(ps_names) > 1 else "".join(ps_names)
+    N.add("prodSafeCountriesAll", ps_text or "none", fmt="s")
 
     gm = an.gmm_check(pscored, "co2_cons_pc", seed)
     json.dump(
